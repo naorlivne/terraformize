@@ -1,0 +1,6 @@
+dpath==1.4.2
+parse-it==3.3.2
+ply==3.11
+pyhcl==0.3.12
+python-dotenv==0.10.3
+xmltodict==0.12.0
