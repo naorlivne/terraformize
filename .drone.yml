@@ -1,0 +1,83 @@
+kind: pipeline
+type: docker
+name: amd64_build
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: run_python_unit_test
+  image: python:3.7.4-alpine3.10
+  commands:
+  - pip install -r requirements.txt
+  - coverage run -m unittest
+  - codecov  --commit=$DRONE_COMMIT_SHA
+  environment:
+    TEST_FILES_LOCATION: test/test_files
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+
+- name: docker_build_version
+  image: plugins/docker
+  when:
+    event:
+      - push
+      - tag
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: naorlivne/terraformize
+    tags:
+      - linux-amd64
+
+
+---
+kind: pipeline
+type: docker
+name: publish_docker_manifest
+
+trigger:
+  event:
+  - push
+  - tag
+
+steps:
+- name: manifest
+  image: plugins/manifest
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    target:  naorlivne/terraformize
+    template: naorlivne/terraformize:OS-ARCH
+    platforms:
+      - linux/amd64
+
+depends_on:
+- amd64_build
+
+---
+kind: pipeline
+type: docker
+name: notify
+
+steps:
+- name: notify
+  image: drillster/drone-email
+  settings:
+    host: aspmx.l.google.com
+    port: 25
+    from: dronealert@dronealert.com
+    recipients: [ naorlivne@gmail.com ]
+    recipients_only: true
+
+trigger:
+  status:
+  - failure
+
+depends_on:
+- publish_docker_manifest
