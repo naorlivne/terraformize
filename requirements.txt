@@ -1,6 +1,17 @@
+certifi==2019.9.11
+chardet==3.0.4
+codecov==2.0.15
+configobj==5.0.6
+coverage==4.5.4
 dpath==1.4.2
+idna==2.8
 parse-it==3.3.2
 ply==3.11
 pyhcl==0.3.12
 python-dotenv==0.10.3
+PyYAML==5.1.2
+requests==2.22.0
+six==1.12.0
+toml==0.10.0
+urllib3==1.25.6
 xmltodict==0.12.0
