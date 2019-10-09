@@ -1,45 +1,57 @@
 from python_terraform import *
 from typing import Tuple, Optional
 
-class terraform:
 
-    def __init__(self):
-        # just a template that still needs work
-        self.tf = Terraform()
+class Terraformize:
 
-    def apply(self, workspace: str, folder_path: str, variables: Optional[dict] = None) -> Tuple[str, str, str]:
+    def __init__(self, workspace: str, folder_path: str):
+        """
+        Will create a terraform object, create a workspace & init the terraform directory
+
+        Arguments:
+            :param workspace: the workspace terraform will be executed in
+            :param folder_path: the folder to run the terraform in
+        """
+        self.tf = Terraform(working_dir=folder_path)
+        self.workspace = workspace
+        self.folder_path = folder_path
+
+        # always create the workspace and switch to it, if workspace already created carries on when it failed creating
+        # it again
+
+        # always init the directory
+
+    def apply(self, variables: Optional[dict] = None) -> Tuple[str, str, str]:
         """
         Will run a terraform apply on a workspace (creating said workspace if needed with the given folder_path & will
         pass all variables to the terraform apply as terraform variables
 
-        :param workspace:
-        :param folder_path:
-        :param variables:
-        :return:
+        Arguments:
+            :param variables: the variables to pass to the terraform apply command
 
-
+        Returns:
+            :return return_code: the return code of the terraform apply
+            :return stdout: the stdout stream of the terraform apply
+            :return stderr: the stderr stream of the terraform apply
         """
 
         if variables is None:
             variables = {}
 
-        self._ensure_workspace_exist_and_used(workspace)
-        return_code, stdout, stderr = self.tf.apply(folder_path, no_color=IsFlagged, var=variables, auto_approve=True,
-                                                    skip_plan=True)
+        return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, auto_approve=True)
 
         return return_code, stdout, stderr
 
-    def destory(self,  workspace, folder_path):
-        self.tf.destroy()
+    def destory(self):
+        """
+        Will run a terraform destroy on a workspace (creating said workspace if needed with the given folder_path & will
+        pass all variables to the terraform apply as terraform variables
 
-    def _check_workspace_exist(self, workspace):
-        pass
+        Arguments:
 
-    def _create_workspace(self, workspace):
-        pass
-
-    def _delete_workspace(self, workspace):
-        pass
-
-    def _ensure_workspace_exist_and_used(self, workspace):
-        pass
+        Returns:
+            :return return_code: the return code of the terraform destroy
+            :return stdout: the stdout stream of the terraform destroy
+            :return stderr: the stderr stream of the terraform destroy
+        """
+        self.tf.destroy(no_color=IsFlagged, auto_approve=True)
