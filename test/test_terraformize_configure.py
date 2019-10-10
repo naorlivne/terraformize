@@ -1,5 +1,5 @@
 from unittest import TestCase
-from terraformize_runner import *
+from terraformize.terraformize_configure import *
 import os
 
 

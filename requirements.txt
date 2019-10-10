@@ -1,10 +1,16 @@
 certifi==2019.9.11
 chardet==3.0.4
+Click==7.0
 codecov==2.0.15
 configobj==5.0.6
 coverage==4.5.4
 dpath==1.4.2
+Flask==1.1.1
+Flask-HTTPAuth==3.3.0
 idna==2.8
+itsdangerous==1.1.0
+Jinja2==2.10.3
+MarkupSafe==1.1.1
 parse-it==3.3.2
 ply==3.11
 pyhcl==0.3.12
@@ -15,4 +21,5 @@ requests==2.22.0
 six==1.12.0
 toml==0.10.0
 urllib3==1.25.6
+Werkzeug==0.16.0
 xmltodict==0.12.0
