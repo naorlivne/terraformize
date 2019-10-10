@@ -10,17 +10,18 @@ class Terraformize:
 
         Arguments:
             :param workspace: the workspace terraform will be executed in
-            :param folder_path: the folder to run the terraform in
+            :param folder_path: the full path of the folder to run the terraform in
         """
         self.tf = Terraform(working_dir=folder_path)
+
+        # always init the directory
+        self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
 
         # always create the workspace and switch to it, if workspace already created carries on when it failed creating
         # it again
         self.tf.create_workspace(workspace=workspace)
-        self.tf.set_workspace(workspace=workspace)
-
-        # always init the directory
-        self.tf.init(dir_or_plan=folder_path)
+        self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
+            self.tf.set_workspace(workspace=workspace)
 
     def apply(self, variables: Optional[dict] = None) -> Tuple[str, str, str]:
         """
@@ -39,10 +40,10 @@ class Terraformize:
         if variables is None:
             variables = {}
 
-        return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, auto_approve=True)
+        return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True)
         return return_code, stdout, stderr
 
-    def destroy(self):
+    def destroy(self) -> Tuple[str, str, str]:
         """
         Will run a terraform destroy on a workspace will pass all variables to the terraform apply as terraform
         variables

@@ -184,3 +184,8 @@ venv.bak/
 venv/
 venv/*
 venv/**
+
+# terraform
+**/.terraform/*
+**/terraform.tfstate.d/*
+.terraform/
