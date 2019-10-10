@@ -36,7 +36,6 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform apply
             :return stderr: the stderr stream of the terraform apply
         """
-
         if variables is None:
             variables = {}
 
@@ -46,7 +45,8 @@ class Terraformize:
     def destroy(self) -> Tuple[str, str, str]:
         """
         Will run a terraform destroy on a workspace will pass all variables to the terraform apply as terraform
-        variables
+        variables, not deleting the workspace as one might want to keep historical data or have multiple modules under
+        the same workspace name
 
         Arguments:
 
