@@ -42,7 +42,7 @@ class Terraformize:
         return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, auto_approve=True)
         return return_code, stdout, stderr
 
-    def destory(self):
+    def destroy(self):
         """
         Will run a terraform destroy on a workspace will pass all variables to the terraform apply as terraform
         variables
