@@ -14,7 +14,6 @@ steps:
   - coverage run -m unittest
   - codecov  --commit=$DRONE_COMMIT_SHA
   environment:
-    TEST_FILES_LOCATION: test/test_files
     CODECOV_TOKEN:
       from_secret: codecov_token
 
