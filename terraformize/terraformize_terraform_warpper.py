@@ -13,18 +13,19 @@ class Terraformize:
             :param folder_path: the folder to run the terraform in
         """
         self.tf = Terraform(working_dir=folder_path)
-        self.workspace = workspace
-        self.folder_path = folder_path
 
         # always create the workspace and switch to it, if workspace already created carries on when it failed creating
         # it again
+        self.tf.create_workspace(workspace=workspace)
+        self.tf.set_workspace(workspace=workspace)
 
         # always init the directory
+        self.tf.init(dir_or_plan=folder_path)
 
     def apply(self, variables: Optional[dict] = None) -> Tuple[str, str, str]:
         """
-        Will run a terraform apply on a workspace (creating said workspace if needed with the given folder_path & will
-        pass all variables to the terraform apply as terraform variables
+        Will run a terraform apply on a workspace & will pass all variables to the terraform apply as terraform
+        variables
 
         Arguments:
             :param variables: the variables to pass to the terraform apply command
@@ -39,13 +40,12 @@ class Terraformize:
             variables = {}
 
         return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, auto_approve=True)
-
         return return_code, stdout, stderr
 
     def destory(self):
         """
-        Will run a terraform destroy on a workspace (creating said workspace if needed with the given folder_path & will
-        pass all variables to the terraform apply as terraform variables
+        Will run a terraform destroy on a workspace will pass all variables to the terraform apply as terraform
+        variables
 
         Arguments:
 
@@ -54,4 +54,5 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform destroy
             :return stderr: the stderr stream of the terraform destroy
         """
-        self.tf.destroy(no_color=IsFlagged, auto_approve=True)
+        return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, auto_approve=True)
+        return return_code, stdout, stderr
