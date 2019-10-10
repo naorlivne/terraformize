@@ -39,4 +39,8 @@ class BaseTests(TestCase):
         self.assertEqual(stderr, "")
 
     def test_terrformize_terraform_wrapper_destroy(self):
-        pass
+        terraform_object = Terraformize("test_workspace", test_files_location)
+        return_code, stdout, stderr = terraform_object.destroy()
+        self.assertEqual(return_code, 0)
+        self.assertIn("Destroy complete!", stdout)
+        self.assertEqual(stderr, "")
