@@ -30,7 +30,7 @@ class BaseTests(TestCase):
             self.assertEqual(reply, expected_reply)
 
     def test_terrformize_configure_read_custom_config_folder(self):
-        reply = read_configurations(config_folder="test_config")
+        reply = read_configurations(config_folder="test/test_config")
         expected_reply = {
             'basic_auth_user': None,
             'basic_auth_password': None,

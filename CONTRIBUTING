@@ -10,7 +10,7 @@ can help
 * Use virtualenv to install all requirements from the requirements.txt file
 * Make sure you have terraform installed & configured to run somewhere on your PATH
 * Fix the issue you \ add a feature
-* Make sure the unittests pass & that code coverage didn't drop (you add it, you write the unit test for it)
+* Make sure the unittests pass & that code coverage didn't drop running from the repo root folder (you add it, you write the unit test for it)
 * Create a pull request
 * Once merged the next version release will have your changes in it
 
