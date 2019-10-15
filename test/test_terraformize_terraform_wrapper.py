@@ -8,6 +8,7 @@ import os
 test_files_location = os.getenv("TEST_FILES_LOCATION", os.path.realpath(__file__).rsplit("/", 1)[0] + "/test_terraform")
 test_bin_location = os.getenv("TEST_BIN_LOCATION", os.path.realpath(__file__).rsplit("/", 2)[0] + "/bin/terraform")
 
+
 class BaseTests(TestCase):
 
     def test_terrformize_terraform_wrapper_init_create_and_use_new_workspace(self):
