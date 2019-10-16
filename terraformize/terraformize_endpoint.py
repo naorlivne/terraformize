@@ -134,9 +134,9 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         :return terraform_return_code: the terraform return code
 
     Exceptions:
-        :except FileNotFoundError: will return HTTP 404 with a JSON of the errorlog it catched from "terraform init" or
+        :except FileNotFoundError: will return HTTP 404 with a JSON of the errorlog it catched from "terraform init" or 
         "terraform destroy"
-        :except Exception: will return HTTP 400 with a JSON of the errorlog it catched from "terraform init" or
+        :except Exception: will return HTTP 400 with a JSON of the errorlog it catched from "terraform init" or 
         "terraform destroy"
     """
     try:
