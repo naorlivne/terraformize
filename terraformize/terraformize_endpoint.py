@@ -1,6 +1,6 @@
 from terraformize.terraformize_terraform_warpper import *
 from terraformize.terraformize_configure import *
-from flask import Flask, request, json, jsonify
+from flask import Flask, request, jsonify
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
 import os
 
@@ -13,6 +13,13 @@ basic_auth = HTTPBasicAuth(realm='terraformize')
 token_auth = HTTPTokenAuth('Bearer')
 multi_auth = MultiAuth(basic_auth, token_auth)
 configuration = read_configurations(os.getenv("CONFIG_DIR", "config"))
+
+
+def terraform_return_code_to_http_code(terraform_return_code):
+    if terraform_return_code == 0:
+        return 200
+    else:
+        return 400
 
 
 # this function checks basic_auth to allow access to authenticated users.
@@ -46,15 +53,27 @@ def verify_token(token):
 @multi_auth.login_required
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["POST"])
 def apply_terraform(module_path, workspace_name):
-    terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + module_path,
+    terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
                                     terraform_bin_path=configuration["terraform_binary_path"])
     terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.apply(request.json)
+    return_body = {
+        "stdout": terraform_stdout,
+        "stderr": terraform_stderr
+    }
+    return jsonify(return_body), terraform_return_code_to_http_code(terraform_return_code)
 
 
 @multi_auth.login_required
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["DELETE"])
 def destroy_terraform(module_path, workspace_name):
-    pass
+    terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
+                                    terraform_bin_path=configuration["terraform_binary_path"])
+    terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.destroy()
+    return_body = {
+        "stdout": terraform_stdout,
+        "stderr": terraform_stderr
+    }
+    return jsonify(return_body), terraform_return_code_to_http_code(terraform_return_code)
 
 
 if __name__ == "__main__":
