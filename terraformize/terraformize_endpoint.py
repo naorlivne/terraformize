@@ -1,49 +1,30 @@
 from terraformize.terraformize_terraform_warpper import *
-from flask import Flask
+from terraformize.terraformize_configure import *
+from flask import Flask, request, json, jsonify
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
+import os
 
 
 API_VERSION = "v1"
 
 
-def init():
-    pass
+app = Flask(__name__)
+basic_auth = HTTPBasicAuth(realm='terraformize')
+token_auth = HTTPTokenAuth('Bearer')
+multi_auth = MultiAuth(basic_auth, token_auth)
+configuration = read_configurations(os.getenv("CONFIG_DIR", "config"))
 
-
-# open waiting connection
-try:
-    app = Flask(__name__)
-    # basic auth for api
-    basic_auth = HTTPBasicAuth(realm='terraformize')
-    token_auth = HTTPTokenAuth('Bearer')
-    multi_auth = MultiAuth(basic_auth, token_auth)
-    print("startup completed - now waiting for connections")
-except Exception as e:
-    print("Flask connection configuration failure - dropping container")
-    print(e, file=sys.stderr)
-    os._exit(2)
 
 # this function checks basic_auth to allow access to authenticated users.
 @basic_auth.verify_password
 def verify_password(username, password):
     # if auth_enabled is set to false then always allow access
-    if username is None or password is None:
+    if configuration["auth_enabled"] is False:
         return True
     # else if username and password matches the admin user set in the manager config allow access
-    elif username == basic_auth_user and password == basic_auth_password:
-        g.user = username
-        g.user_type = "local"
+    elif username == configuration["basic_auth_user"] and password == configuration["basic_auth_password"]:
         return True
-    # else if the user and password matches any in the DB allow access
-    elif mongo_connection.mongo_check_user_exists(username) is True:
-        user_exists, user_json = mongo_connection.mongo_get_user(username)
-        if check_secret_matches(password, user_json["password"]) is True:
-            g.user = username
-            g.user_type = "db"
-            return True
-        else:
-            return False
-    # on any other case deny access:
+    # in any other case return false
     else:
         return False
 
@@ -52,20 +33,34 @@ def verify_password(username, password):
 @token_auth.verify_token
 def verify_token(token):
     # if auth_enabled is set to false then always allow access
-    if auth_enabled is False:
+    if configuration["auth_enabled"] is False:
         return True
     # else if the token matches the admin user set in the manager config allow access
-    elif auth_token == token:
-        g.user_type = "local"
+    elif configuration["auth_token"] == token:
         return True
-    # else if the token matches any in the DB allow access or deny access if not
+    # in any other case return false
     else:
-        allow_access = False
-        user_list = mongo_connection.mongo_list_users()
-        for user in user_list:
-            user_exists, user_json = mongo_connection.mongo_get_user(user)
-            if check_secret_matches(token, user_json["token"]) is True:
-                g.user = user
-                g.user_type = "db"
-                allow_access = True
-        return allow_access
+        return False
+
+
+@multi_auth.login_required
+@app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["POST"])
+def apply_terraform(module_path, workspace_name):
+    terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + module_path,
+                                    terraform_bin_path=configuration["terraform_binary_path"])
+    terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.apply(request.json)
+
+
+@multi_auth.login_required
+@app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["DELETE"])
+def destroy_terraform(module_path, workspace_name):
+    pass
+
+
+if __name__ == "__main__":
+    try:
+        app.run(host="127.0.0.1", port=5000, threaded=True)
+    except Exception as e:
+        print("Flask connection failure - dropping container")
+        print(e, file=sys.stderr)
+        exit(2)
