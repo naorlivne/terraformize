@@ -24,4 +24,24 @@ def read_configurations(config_folder: str = "config"):
     config["terraform_binary_path"] = parser.read_configuration_variable("terraform_binary_path", default_value=None)
     config["terraform_modules_path"] = parser.read_configuration_variable("terraform_modules_path",
                                                                           default_value="/www/terraform_modules")
+    config["auth_enabled"] = auth_enabled(config["basic_auth_user"], config["basic_auth_password"],
+                                          config["auth_token"])
     return config
+
+
+def auth_enabled(username, password, token):
+    """
+    Checks if auth is enabled by making sure if there is a username & password pair or a token configured
+
+    Arguments:
+        :param username: the possible username for authentication
+        :param password: the possible password for authentication
+        :param token: the possible token for authentication
+
+    Returns:
+        :return auth_required: True if auth is enabled, False otherwise
+    """
+    if token is None and (username is None or password is None):
+        return False
+    else:
+        return True
