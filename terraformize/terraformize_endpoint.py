@@ -62,8 +62,10 @@ def apply_terraform(module_path, workspace_name):
             "stderr": terraform_stderr
         }
         return jsonify(return_body), terraform_return_code_to_http_code(terraform_return_code)
-    except Exception as error_log:
+    except FileNotFoundError as error_log:
         return jsonify({"error": str(error_log)}), 404
+    except Exception as error_log:
+        return jsonify({"error": str(error_log)}), 400
 
 
 @multi_auth.login_required
@@ -78,14 +80,7 @@ def destroy_terraform(module_path, workspace_name):
             "stderr": terraform_stderr
         }
         return jsonify(return_body), terraform_return_code_to_http_code(terraform_return_code)
-    except Exception as error_log:
+    except FileNotFoundError as error_log:
         return jsonify({"error": str(error_log)}), 404
-
-
-if __name__ == "__main__":
-    try:
-        app.run(host="127.0.0.1", port=5000, threaded=True)
-    except Exception as e:
-        print("Flask connection failure - dropping container")
-        print(e, file=sys.stderr)
-        exit(2)
+    except Exception as error_log:
+        return jsonify({"error": str(error_log)}), 400
