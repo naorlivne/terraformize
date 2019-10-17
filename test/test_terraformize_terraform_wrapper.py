@@ -38,9 +38,16 @@ class BaseTests(TestCase):
         self.assertIn("test = set", stdout)
         self.assertEqual(stderr, "")
 
-    def test_terraformize_terraform_wrapper_destroy(self):
+    def test_terraformize_terraform_wrapper_destroy_no_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.destroy()
+        self.assertEqual(return_code, 0)
+        self.assertIn("Destroy complete!", stdout)
+        self.assertEqual(stderr, "")
+
+    def test_terraformize_terraform_wrapper_destroy_with_vars(self):
+        terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
+        return_code, stdout, stderr = terraform_object.destroy({"test": "set"})
         self.assertEqual(return_code, 0)
         self.assertIn("Destroy complete!", stdout)
         self.assertEqual(stderr, "")

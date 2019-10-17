@@ -13,7 +13,7 @@ Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/m
     * `terraform destroy`
 * No code changes needed, supports 100% of all terraform modules unmodified
 * Built in support for multiple terraform workspaces
-* Can pass variables to the terraform run via the request body (passed as a -var arg to the `terraform apply` command)
+* Can pass variables to the terraform run via the request body (passed as a -var arg to the `terraform apply` or `terraform destroy` command)
 * Supports multiple module directories
 * Automatically runs terraform init before changes
 * Returned response includes all the logs of stdout & stderr of terraform for easy debugging
@@ -77,6 +77,7 @@ Terraformize supports 3 authentication methods:
 * DELETE /v1/module_folder_name/workspace_name
     * runs `terraform destroy` for you
     * takes care of auto approval of the run, auto init & workspace switching as needed
+    * takes variables which are passed to `terraform destroy` as a JSON in the body of the message in the format of `{"var_key1": "var_value1", "var_key2": "var_value2"}`
     * Returns 200 HTTP status code if everything is ok, 404 if you gave it a non existing module_folder_name path & 400 if the `terraform apply` ran but failed to make all needed modifications
     * Also returns a JSON body of {"stderr": "...", "stdout": "..."} with the stderr & stdout of the `terraform apply` run
 * GET /v1/health
@@ -134,9 +135,15 @@ Terraformize supports 3 authentication methods:
    curl -X DELETE \
       http://127.0.0.1/v1/terraformize_test/my_workspace \
       -H 'Content-Type: application/json' \
-      -H 'cache-control: no-cache' 
+      -H 'cache-control: no-cache' \
+      -d '{
+        "test_var": "hello-world"
+    }' 
    curl -X DELETE \
       http://127.0.0.1/v1/terraformize_test/my_other_workspace \
       -H 'Content-Type: application/json' \
-      -H 'cache-control: no-cache' 
+      -H 'cache-control: no-cache' \
+      -d '{
+        "test_var": "hello-world"
+    }'
     ```

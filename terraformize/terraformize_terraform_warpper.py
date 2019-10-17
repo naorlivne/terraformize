@@ -45,9 +45,13 @@ class Terraformize:
         return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True)
         return return_code, stdout, stderr
 
-    def destroy(self) -> Tuple[str, str, str]:
+    def destroy(self, variables: Optional[dict] = None) -> Tuple[str, str, str]:
         """
-        Will run a terraform destroy on a workspace will pass all variables to the terraform apply as terraform
+
+        Arguments:
+            :param variables: the variables to pass to the terraform destory command
+
+        Will run a terraform destroy on a workspace will pass all variables to the terraform destory as terraform
         variables, not deleting the workspace as one might want to keep historical data or have multiple modules under
         the same workspace name
 
@@ -58,5 +62,5 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform destroy
             :return stderr: the stderr stream of the terraform destroy
         """
-        return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, auto_approve=True)
+        return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, var=variables, auto_approve=True)
         return return_code, stdout, stderr
