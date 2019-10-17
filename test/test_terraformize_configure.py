@@ -11,21 +11,19 @@ class BaseTests(TestCase):
             'basic_auth_user': None,
             'basic_auth_password': None,
             'auth_token': None,
-            'max_timeout': 600,
             'terraform_binary_path': None,
             'terraform_modules_path': '/www/terraform_modules'
         }
         self.assertEqual(reply, expected_reply)
 
     def test_terraformize_configure_read_envar(self):
-        with mock.patch('os.environ', {"MAX_TIMEOUT": "300", "AUTH_TOKEN": "my_super_secret_token"}):
+        with mock.patch('os.environ', {"AUTH_TOKEN": "my_super_secret_token123"}):
             reply = read_configurations()
             expected_reply = {
                 'auth_enabled': True,
                 'basic_auth_user': None,
                 'basic_auth_password': None,
-                'auth_token': "my_super_secret_token",
-                'max_timeout': 300,
+                'auth_token': "my_super_secret_token123",
                 'terraform_binary_path': None,
                 'terraform_modules_path': '/www/terraform_modules'
             }
@@ -38,9 +36,8 @@ class BaseTests(TestCase):
             'basic_auth_user': None,
             'basic_auth_password': None,
             'auth_token': "my_super_secret_token",
-            'max_timeout': 450,
             'terraform_binary_path': None,
-            'terraform_modules_path': '/www/terraform_modules'
+            'terraform_modules_path': '/www/terraform_modules123'
         }
         self.assertEqual(reply, expected_reply)
 
