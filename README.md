@@ -44,6 +44,8 @@ Running Terraformize is as simple as running a docker container
 docker run -d -p 80:80 -v /path/to/my/terraform/module/dir/:/www/terraform_modules/ naorlivne/terraformize
 ```
 
+Feel free to skip to the end of the document for a working example that will explain how to use Terraformize
+
 # Configuration options
 
 Terraformize uses sane defaults but they can all be easily changed:
