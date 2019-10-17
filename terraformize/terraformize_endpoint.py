@@ -79,8 +79,8 @@ def verify_token(token: Optional[str]) -> bool:
         return False
 
 
-@multi_auth.login_required
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["POST"])
+@multi_auth.login_required
 def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     """
     A rest endpoint to apply terraform modules at a given module path inside the main module directory path at a given
@@ -113,8 +113,8 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         return jsonify({"error": str(error_log)}), 404
 
 
-@multi_auth.login_required
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["DELETE"])
+@multi_auth.login_required
 def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     """
     A rest endpoint to destroy terraform modules at a given module path inside the main module directory path at a given
