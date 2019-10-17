@@ -152,7 +152,7 @@ def health_check() -> Tuple[str, int]:
     A REST endpoint to make sure that terraformize is working
 
     Returns:
-        :return return_body: a JSON of {"healthy": True}
+        :return return_body: a JSON of {"healthy": true}
         :return terraform_return_code: 200
 
     """
