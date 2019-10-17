@@ -87,7 +87,7 @@ Terraformize supports 3 authentication methods:
     * In order to preserve the history of terraform runs in your backend the workspace is not deleted automatically, only the infrastructure is destroyed
 * GET /v1/health
     * Returns 200 HTTP status code
-    * Also returns a JSON body of {"healthy": True}
+    * Also returns a JSON body of {"healthy": true}
     * Never needs auth
     * Useful to monitoring the health of Terraformize service
 
