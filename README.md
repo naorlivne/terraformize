@@ -60,6 +60,8 @@ Terraformize uses sane defaults but they can all be easily changed:
 
 The easiest way to change a default value is to pass the envvar key\value to the docker container with the `-e` cli arg but if you want you can also create a configuration file with the settings you wish (in whatever of the standard format you desire) & place it in the /www/config folder inside the container.
 
+Most providers also allow setting their configuration access_keys\etc via envvars use `-e` cli args to configure them is ideal as well but should you wish to configure a file you can also easily mount\copy it into the container as well.
+
 ## Authentication 
 
 Terraformize supports 3 authentication methods:
