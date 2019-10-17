@@ -134,15 +134,9 @@ Terraformize supports 3 authentication methods:
    curl -X DELETE \
       http://127.0.0.1/v1/terraformize_test/my_workspace \
       -H 'Content-Type: application/json' \
-      -H 'cache-control: no-cache' \
-      -d '{
-        "test_var": "hello-world"
-    }' 
+      -H 'cache-control: no-cache' 
    curl -X DELETE \
       http://127.0.0.1/v1/terraformize_test/my_other_workspace \
       -H 'Content-Type: application/json' \
-      -H 'cache-control: no-cache' \
-      -d '{
-        "test_var": "hello-world"
-    }'
+      -H 'cache-control: no-cache' 
     ```
