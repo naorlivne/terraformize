@@ -98,8 +98,6 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     Exceptions:
         :except FileNotFoundError: will return HTTP 404 with a JSON of the errorlog it catched from "terraform init" or
         "terraform apply"
-        :except Exception: will return HTTP 400 with a JSON of the errorlog it catched from "terraform init" or
-        "terraform apply"
     """
     try:
         terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
@@ -113,8 +111,6 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         return return_body, terraform_return_code
     except FileNotFoundError as error_log:
         return jsonify({"error": str(error_log)}), 404
-    except Exception as error_log:
-        return jsonify({"error": str(error_log)}), 400
 
 
 @multi_auth.login_required
@@ -136,8 +132,6 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     Exceptions:
         :except FileNotFoundError: will return HTTP 404 with a JSON of the errorlog it catched from "terraform init" or 
         "terraform destroy"
-        :except Exception: will return HTTP 400 with a JSON of the errorlog it catched from "terraform init" or 
-        "terraform destroy"
     """
     try:
         terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
@@ -150,5 +144,3 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         return return_body, terraform_return_code_to_http_code(int(terraform_return_code))
     except FileNotFoundError as error_log:
         return jsonify({"error": str(error_log)}), 404
-    except Exception as error_log:
-        return jsonify({"error": str(error_log)}), 400
