@@ -83,7 +83,7 @@ def verify_token(token: Optional[str]) -> bool:
 @multi_auth.login_required
 def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     """
-    A rest endpoint to apply terraform modules at a given module path inside the main module directory path at a given
+    A REST endpoint to apply terraform modules at a given module path inside the main module directory path at a given
     workspace
 
     Arguments:
@@ -117,7 +117,7 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
 @multi_auth.login_required
 def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     """
-    A rest endpoint to destroy terraform modules at a given module path inside the main module directory path at a given
+    A REST endpoint to destroy terraform modules at a given module path inside the main module directory path at a given
     workspace
 
     Arguments:
@@ -144,3 +144,16 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         return return_body, terraform_return_code_to_http_code(int(terraform_return_code))
     except FileNotFoundError as error_log:
         return jsonify({"error": str(error_log)}), 404
+
+
+@app.route('/' + API_VERSION + '/health', methods=["GET"])
+def health_check() -> Tuple[str, int]:
+    """
+    A REST endpoint to make sure that terraformize is working
+
+    Returns:
+        :return return_body: a JSON of {"healthy": True}
+        :return terraform_return_code: 200
+
+    """
+    return jsonify({"healthy": True}), 200

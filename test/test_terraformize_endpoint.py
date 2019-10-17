@@ -122,3 +122,12 @@ class BaseTests(TestCase):
             self.assertEqual(request.path, '/v1/non_runnable_test/test_workspace')
             return_body, terraform_return_code = destroy_terraform("non_runnable_test", "test_workspace")
             self.assertEqual(terraform_return_code, 400)
+
+    def test_terraformize_endpoint_health_check_get(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        with app.test_request_context('/v1/health', method='GET'):
+            self.assertEqual(request.path, '/v1/health')
+            return_body, terraform_return_code = health_check()
+            self.assertEqual(terraform_return_code, 200)
+            self.assertEqual(return_body.json, {"healthy": True})
