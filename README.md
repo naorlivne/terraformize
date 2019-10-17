@@ -110,7 +110,7 @@ Terraformize supports 3 authentication methods:
       value = var.test_var
     }
     ```
-3. We will also need to add the folder we created into the Terraformize container, this can be done by many diffrent way (for example creating a container that copies our modules into a new image with the FROM base image being Terraformize base image) but for this example we will simply mount the folder path into the container as we run it:
+3. We will also need to add the folder we created into the Terraformize container, this can be done by many different way (for example creating a container that copies our modules into a new image with the FROM base image being Terraformize base image) but for this example we will simply mount the folder path into the container as we run it:
     ```docker
     docker run -d -p 80:80 -v `pwd`:/www/terraform_modules/ naorlivne/terraformize
     ```
