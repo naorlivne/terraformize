@@ -100,6 +100,7 @@ Terraformize supports 3 authentication methods:
     
     variable "test_var" {
       description = "an example variable"
+      default = "my_variable_default_value"
     }
     
     output "test" {
