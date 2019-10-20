@@ -9,7 +9,7 @@ COPY . /www
 RUN chmod +x /www/terraformize_runner.py
 
 # copy terraform binary and make it executable
-COPY --from=installer /usr/bin/terraform
+COPY --from=installer /software/terraform /usr/bin/terraform
 RUN chmod +x /usr/bin/terraform
 
 # install required packages - requires build-base due to gevent GCC complier requirements
