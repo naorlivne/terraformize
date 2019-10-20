@@ -34,6 +34,84 @@ steps:
       - linux-amd64
       - linux-amd64-v${DRONE_BUILD_NUMBER}
 
+---
+
+kind: pipeline
+type: docker
+name: arm_build
+
+platform:
+  os: linux
+  arch: arm
+
+steps:
+- name: run_python_unit_test
+  image: python:3.7.4-alpine3.10
+  commands:
+  - apk add --no-cache build-base libffi-dev
+  - pip install -r requirements.txt
+  - coverage run -m unittest
+  - codecov  --commit=$DRONE_COMMIT_SHA
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+
+- name: docker_build_version
+  image: plugins/docker
+  when:
+    event:
+      - push
+      - tag
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: naorlivne/terraformize
+    tags:
+      - linux-arm
+      - linux-arm-v${DRONE_BUILD_NUMBER}
+    dockerfile: Dockerfile-arm
+
+
+---
+
+kind: pipeline
+type: docker
+name: arm64_build
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: run_python_unit_test
+  image: python:3.7.4-alpine3.10
+  commands:
+  - apk add --no-cache build-base libffi-dev
+  - pip install -r requirements.txt
+  - coverage run -m unittest
+  - codecov  --commit=$DRONE_COMMIT_SHA
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+
+- name: docker_build_version
+  image: plugins/docker
+  when:
+    event:
+      - push
+      - tag
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: naorlivne/terraformize
+    tags:
+      - linux-arm64
+      - linux-arm64-v${DRONE_BUILD_NUMBER}
+    dockerfile: Dockerfile-arm64
 
 ---
 kind: pipeline
@@ -57,9 +135,13 @@ steps:
     template: naorlivne/terraformize:OS-ARCH
     platforms:
       - linux/amd64
+      - linux/arm
+      - linux/arm64
 
 depends_on:
 - amd64_build
+- arm_build
+- arm64_build
 
 ---
 kind: pipeline
@@ -83,9 +165,13 @@ steps:
     template: naorlivne/terraformize:OS-ARCH-v${DRONE_BUILD_NUMBER}
     platforms:
       - linux/amd64
+      - linux/arm
+      - linux/arm64
 
 depends_on:
 - amd64_build
+- arm_build
+- arm64_build
 
 ---
 

@@ -1,3 +1,6 @@
+FROM sethvargo/hashicorp-installer:0.1.3 AS terraform_installer
+RUN /install-hashicorp-tool terraform 0.12.9 linux amd64
+
 # it's offical so i'm using it + alpine so damn small
 FROM python:3.7.4-alpine3.10
 
@@ -5,11 +8,9 @@ FROM python:3.7.4-alpine3.10
 COPY . /www
 RUN chmod +x /www/terraformize_runner.py
 
-# make the terraform binary is executable
-RUN chmod +x /www/bin/terraform
-
-# symlink the terraform binary to a location on the PATH
-RUN ln -s /www/bin/terraform /usr/bin/terraform
+# copy terraform binary and make it executable
+COPY --from=installer /usr/bin/terraform
+RUN chmod +x /usr/bin/terraform
 
 # install required packages - requires build-base due to gevent GCC complier requirements
 RUN apk add --no-cache build-base libffi-dev
