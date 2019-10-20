@@ -62,8 +62,6 @@ depends_on:
 - amd64_build
 
 ---
-
----
 kind: pipeline
 type: docker
 name: publish_docker_manifest_version
