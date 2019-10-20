@@ -32,6 +32,7 @@ steps:
     repo: naorlivne/terraformize
     tags:
       - linux-amd64
+      - linux-amd64-v${DRONE_BUILD_NUMBER}
 
 
 ---
@@ -61,6 +62,35 @@ depends_on:
 - amd64_build
 
 ---
+
+---
+kind: pipeline
+type: docker
+name: publish_docker_manifest_version
+
+trigger:
+  event:
+  - push
+  - tag
+
+steps:
+- name: manifest
+  image: plugins/manifest
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    target:  naorlivne/terraformize:v${DRONE_BUILD_NUMBER}
+    template: naorlivne/terraformize:OS-ARCH-v${DRONE_BUILD_NUMBER}
+    platforms:
+      - linux/amd64
+
+depends_on:
+- amd64_build
+
+---
+
 kind: pipeline
 type: docker
 name: notify
@@ -81,3 +111,4 @@ trigger:
 
 depends_on:
 - publish_docker_manifest
+- publish_docker_manifest_version
