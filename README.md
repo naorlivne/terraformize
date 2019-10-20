@@ -23,6 +23,7 @@ Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/m
 * support all terraform backends that support multiple workspaces
 * No DB needed, all data stored at the terraform backend of your choosing
 * terraformize scales out as much as you need risk free (requires you use a backend that support state locking)
+* AMD64 & Arm support (Arm64 not supported as there is no current binary for Terraform for it)
 
 # Possible use cases
 
