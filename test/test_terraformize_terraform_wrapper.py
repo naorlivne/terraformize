@@ -5,8 +5,9 @@ import os
 
 # this will run all tests in relation to the location of this file so that the test_terraform folder will catch
 # the correct path
-test_files_location = os.getenv("TEST_FILES_LOCATION", os.path.realpath(__file__).rsplit("/", 1)[0] + "/test_terraform/working_test")
-test_bin_location = os.getenv("TEST_BIN_LOCATION", os.path.realpath(__file__).rsplit("/", 2)[0] + "/bin/terraform")
+test_files_location = os.getenv("TEST_FILES_LOCATION", os.path.realpath(__file__).rsplit("/", 1)[0] +
+                                "/test_terraform/working_test")
+test_bin_location = os.getenv("TEST_BIN_LOCATION", "/usr/bin/terraform")
 
 
 class BaseTests(TestCase):

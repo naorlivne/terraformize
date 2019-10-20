@@ -21,6 +21,7 @@ steps:
   - coverage run -m unittest
   - codecov  --commit=$DRONE_COMMIT_SHA
   environment:
+    TEST_BIN_LOCATION: ./terraform
     CODECOV_TOKEN:
       from_secret: codecov_token
 
@@ -65,6 +66,7 @@ steps:
   - coverage run -m unittest
   - codecov  --commit=$DRONE_COMMIT_SHA
   environment:
+    TEST_BIN_LOCATION: ./terraform
     CODECOV_TOKEN:
       from_secret: codecov_token
 
