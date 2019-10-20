@@ -16,12 +16,12 @@ steps:
 - name: run_python_unit_test
   image: python:3.7.4-alpine3.10
   commands:
+  - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
   - pip install -r requirements.txt
   - coverage run -m unittest
   - codecov  --commit=$DRONE_COMMIT_SHA
   environment:
-    TEST_BIN_LOCATION: ./terraform
     CODECOV_TOKEN:
       from_secret: codecov_token
 
@@ -61,12 +61,12 @@ steps:
 - name: run_python_unit_test
   image: python:3.7.4-alpine3.10
   commands:
+  - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
   - pip install -r requirements.txt
   - coverage run -m unittest
   - codecov  --commit=$DRONE_COMMIT_SHA
   environment:
-    TEST_BIN_LOCATION: ./terraform
     CODECOV_TOKEN:
       from_secret: codecov_token
 
