@@ -17,8 +17,9 @@ RUN apk add --no-cache \
 	build-base \
 	libffi-dev
 
-# copy terraform binary
-COPY --from=terraform /bin/terraform /usr/local/bin/terraform
+# copy terraform binary and make it executable	#set python to be unbuffered
+COPY --from=terraform_installer /tmp/terraform /usr/local/bin/terraform
+RUN chmod +x /usr/local/bin/terraform
 
 # adding the gunicorn config
 COPY config/config.py /etc/gunicorn/config.py
