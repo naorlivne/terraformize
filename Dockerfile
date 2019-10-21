@@ -1,7 +1,5 @@
-# first need to get the terrafrom binary and extract it
-FROM alpine:3.10 AS terraform_installer
-ADD https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip /tmp/
-RUN unzip /tmp/terraform_*.zip -d /tmp
+# pull upstream terraform image
+FROM hashicorp/terraform:light AS terraform
 
 # it's offical so i'm using it + alpine so damn small
 FROM python:3.7.4-alpine3.10
@@ -10,9 +8,8 @@ FROM python:3.7.4-alpine3.10
 COPY . /www
 RUN chmod +x /www/terraformize_runner.py
 
-# copy terraform binary and make it executable
-COPY --from=terraform_installer /tmp/terraform /usr/bin/terraform
-RUN chmod +x /usr/bin/terraform
+# copy terraform binary
+COPY --from=terraform /bin/terraform /usr/local/bin/terraform
 
 # install required packages - requires build-base due to gevent GCC complier requirements
 RUN apk add --no-cache build-base libffi-dev
