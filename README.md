@@ -56,7 +56,7 @@ Terraformize uses sane defaults but they can all be easily changed:
 | basic_auth_user        | BASIC_AUTH_USER        | None                   | Basic auth username to use                                                                             |
 | basic_auth_password    | BASIC_AUTH_PASSWORD    | None                   | Basic auth password to use                                                                             |
 | auth_token             | AUTH_TOKEN             | None                   | bearer token to use                                                                                    |
-| terraform_binary_path  | TERRAFORM_BINARY_PATH  | None                   | The path to the terraform binary, if None will use the default OS PATH to find it, defaults to v0.12.9 |
+| terraform_binary_path  | TERRAFORM_BINARY_PATH  | None                   | The path to the terraform binary, if None will use the default OS PATH to find it                      |
 | terraform_modules_path | TERRAFORM_MODULES_PATH | /www/terraform_modules | The path to the parent directory where all terraform module directories will be stored at as subdirs   |
 |                        | CONFIG_DIR             | /www/config            | The path to the directory where configuration files are stored at                                      |
 
