@@ -51,7 +51,7 @@ class Terraformize:
         Arguments:
             :param variables: the variables to pass to the terraform destory command
 
-        Will run a terraform destroy on a workspace will pass all variables to the terraform destory as terraform
+        Will run a terraform destroy on a workspace will pass all variables to the terraform destroy as terraform
         variables, not deleting the workspace as one might want to keep historical data or have multiple modules under
         the same workspace name
 
