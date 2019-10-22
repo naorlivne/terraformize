@@ -10,7 +10,7 @@ EXPOSE 80
 #set python to be unbuffered
 ENV PYTHONUNBUFFERED=1
 
-# install required packages - requires build-base due to gevent GCC complier requirements
+# install required packages - requires build-base due to gevent GCC compiler requirements
 RUN apk add --no-cache \
 	build-base \
 	libffi-dev
