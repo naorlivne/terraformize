@@ -9,6 +9,7 @@ from flask import request
 test_files_location = os.getenv("TEST_FILES_LOCATION", os.path.realpath(__file__).rsplit("/", 1)[0]) + "/test_terraform"
 test_bin_location = os.getenv("TEST_BIN_LOCATION", "/usr/bin/terraform")
 
+
 class BaseTests(TestCase):
 
     def test_terraformize_endpoint_terraform_return_code_to_http_code_0_to_200(self):
