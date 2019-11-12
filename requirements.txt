@@ -23,6 +23,6 @@ PyYAML==5.1.2
 requests==2.22.0
 six==1.13.0
 toml==0.10.0
-urllib3==1.25.6
+urllib3==1.25.7
 Werkzeug==0.16.0
 xmltodict==0.12.0
