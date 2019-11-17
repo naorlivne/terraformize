@@ -102,7 +102,9 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     try:
         terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
                                         terraform_bin_path=configuration["terraform_binary_path"])
-        terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.apply(request.json)
+        terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.apply(
+            request.json, configuration["parallelism"]
+        )
         return_body = jsonify({
             "init_stdout": terraform_object.init_stdout,
             "init_stderr": terraform_object.init_stderr,
@@ -138,7 +140,9 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
     try:
         terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
                                         terraform_bin_path=configuration["terraform_binary_path"])
-        terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.destroy(request.json)
+        terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.destroy(
+            request.json, configuration["parallelism"]
+        )
         return_body = jsonify({
             "init_stdout": terraform_object.init_stdout,
             "init_stderr": terraform_object.init_stderr,

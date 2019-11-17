@@ -31,6 +31,14 @@ class BaseTests(TestCase):
         self.assertIn("test = not_set", stdout)
         self.assertEqual(stderr, "")
 
+    def test_terraformize_terraform_wrapper_parallelism(self):
+        terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
+        return_code, stdout, stderr = terraform_object.apply(None, 5)
+        self.assertEqual(return_code, 0)
+        self.assertIn("Apply complete!", stdout)
+        self.assertIn("test = not_set", stdout)
+        self.assertEqual(stderr, "")
+
     def test_terraformize_terraform_wrapper_apply_with_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply({"test": "set"})
@@ -42,6 +50,13 @@ class BaseTests(TestCase):
     def test_terraformize_terraform_wrapper_destroy_no_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.destroy()
+        self.assertEqual(return_code, 0)
+        self.assertIn("Destroy complete!", stdout)
+        self.assertEqual(stderr, "")
+
+    def test_terraformize_terraform_wrapper_destroy_parallelism(self):
+        terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
+        return_code, stdout, stderr = terraform_object.destroy(None, 5)
         self.assertEqual(return_code, 0)
         self.assertIn("Destroy complete!", stdout)
         self.assertEqual(stderr, "")

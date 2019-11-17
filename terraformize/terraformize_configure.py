@@ -25,6 +25,7 @@ def read_configurations(config_folder: str = "config"):
                                                                           default_value="/www/terraform_modules")
     config["auth_enabled"] = auth_enabled(config["basic_auth_user"], config["basic_auth_password"],
                                           config["auth_token"])
+    config["parallelism"] = parser.read_configuration_variable("parallelism", default_value=10)
     return config
 
 

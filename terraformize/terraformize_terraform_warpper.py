@@ -26,13 +26,14 @@ class Terraformize:
         # always init the directory
         self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
 
-    def apply(self, variables: Optional[dict] = None) -> Tuple[str, str, str]:
+    def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """
         Will run a terraform apply on a workspace & will pass all variables to the terraform apply as terraform
         variables
 
         Arguments:
             :param variables: the variables to pass to the terraform apply command
+            :param parallelism: the number of parallel resource operations
 
         Returns:
             :return return_code: the return code of the terraform apply
@@ -42,14 +43,16 @@ class Terraformize:
         if variables is None:
             variables = {}
 
-        return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True)
+        return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True,
+                                                    parallelism=parallelism)
         return return_code, stdout, stderr
 
-    def destroy(self, variables: Optional[dict] = None) -> Tuple[str, str, str]:
+    def destroy(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """
 
         Arguments:
             :param variables: the variables to pass to the terraform destroy command
+            :param parallelism: the number of parallel resource operations
 
         Will run a terraform destroy on a workspace will pass all variables to the terraform destroy as terraform
         variables, not deleting the workspace as one might want to keep historical data or have multiple modules under
@@ -62,5 +65,6 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform destroy
             :return stderr: the stderr stream of the terraform destroy
         """
-        return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, var=variables, auto_approve=True)
+        return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, var=variables, auto_approve=True,
+                                                      parallelism=parallelism)
         return return_code, stdout, stderr
