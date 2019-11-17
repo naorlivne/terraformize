@@ -12,7 +12,7 @@ EXPOSE 80
 # set python to be unbuffered
 ENV PYTHONUNBUFFERED=1
 
-# set tearrform automation flag
+# set terraform automation flag
 ENV TF_IN_AUTOMATION=true
 
 # install required packages - requires build-base due to gevent GCC compiler requirements
