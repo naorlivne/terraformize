@@ -68,7 +68,6 @@ class BaseTests(TestCase):
         configuration["terraform_binary_path"] = test_bin_location
         expected_body = {
             'error': "[Errno 2] No such file or directory: '" +
-                     test_files_location + "/fake_test_module': '" +
                      test_files_location + "/fake_test_module'"
         }
         with app.test_request_context('/v1/fake_test_module/test_workspace', method='POST'):
@@ -82,7 +81,6 @@ class BaseTests(TestCase):
         configuration["terraform_binary_path"] = test_bin_location
         expected_body = {
             'error': "[Errno 2] No such file or directory: '" +
-                     test_files_location + "/fake_test_module': '" +
                      test_files_location + "/fake_test_module'"
         }
         with app.test_request_context('/v1/fake_test_module/test_workspace', method='DELETE'):
