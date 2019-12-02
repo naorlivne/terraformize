@@ -14,7 +14,7 @@ steps:
   - unzip /tmp/terraform_*.zip
 
 - name: run_python_unit_test
-  image: python:3.7.4-alpine3.10
+  image: python:3.8.0-alpine3.10
   commands:
   - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
@@ -59,7 +59,7 @@ steps:
     - unzip /tmp/terraform_*.zip
 
 - name: run_python_unit_test
-  image: python:3.7.4-alpine3.10
+  image: python:3.8.0-alpine3.10
   commands:
   - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
