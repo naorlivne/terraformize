@@ -170,7 +170,7 @@ steps:
   settings:
     api_key:
       from_secret: github_api_key
-    files: *
+    files: ./**
     title: v${DRONE_BUILD_NUMBER}
     note: CHANGELOG.md
 
