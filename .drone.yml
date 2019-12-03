@@ -107,6 +107,12 @@ steps:
     platforms:
       - linux/amd64
       - linux/arm
+- name: create_changelog
+  image: naorlivne/drone-github-changelog-generator
+  settings:
+    github_user: ${DRONE_REPO_NAMESPACE}
+    github_project: ${DRONE_REPO_NAME}
+    output_path: CHANGELOG.md
 
 depends_on:
 - amd64_build
