@@ -175,6 +175,7 @@ steps:
     - echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    - git push --set-upstream origin master
     - git push
   environment:
     SSH_KEY:
