@@ -30,7 +30,6 @@ steps:
   when:
     event:
       - push
-      - tag
   settings:
     username:
       from_secret: docker_username
@@ -75,7 +74,6 @@ steps:
   when:
     event:
       - push
-      - tag
   settings:
     username:
       from_secret: docker_username
@@ -95,7 +93,6 @@ name: publish_docker_manifest
 trigger:
   event:
   - push
-  - tag
 
 steps:
 - name: manifest
@@ -123,7 +120,6 @@ name: publish_docker_manifest_version
 trigger:
   event:
   - push
-  - tag
 
 steps:
 - name: manifest
