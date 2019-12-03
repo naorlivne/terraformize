@@ -26,6 +26,7 @@ steps:
     password:
       from_secret: docker_password
     dry_run: true
+    purge: false
     repo: naorlivne/terraformize
     tags:
       - linux-amd64
