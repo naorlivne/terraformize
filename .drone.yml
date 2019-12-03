@@ -165,6 +165,14 @@ steps:
     github_user: ${DRONE_REPO_NAMESPACE}
     github_project: ${DRONE_REPO_NAME}
     output_path: CHANGELOG.md
+- name: publish_github_release
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: github_api_key
+    files: *
+    title: v${DRONE_BUILD_NUMBER}
+    note: CHANGELOG.md
 
 depends_on:
 - amd64_build
