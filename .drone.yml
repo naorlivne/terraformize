@@ -162,6 +162,7 @@ trigger:
 depends_on:
 - publish_docker_manifest
 - publish_docker_manifest_version
+- publish_github_release
 
 ---
 kind: pipeline
