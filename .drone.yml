@@ -7,12 +7,6 @@ platform:
   arch: amd64
 
 steps:
-- name: install_terraform
-  image: alpine:3.10
-  commands:
-  - wget https://releases.hashicorp.com/terraform/0.12.12/terraform_0.12.12_linux_amd64.zip -O /tmp/terraform_0.12.12_linux_amd64.zip
-  - unzip /tmp/terraform_*.zip
-
 - name: docker_build_test_version
   image: plugins/docker
   settings:
