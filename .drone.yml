@@ -166,16 +166,19 @@ steps:
     github_project: ${DRONE_REPO_NAME}
     output_path: CHANGELOG.md
 - name: publish_changelog
-  image: appleboy/drone-git-push
-  settings:
-    branch: master
-    force: false
-    commit: true
-    commit_message: "[skip ci] Commit automatic created changelog"
-    ssh_key:
+  image: alpine:3.10
+  commands:
+    - apk add --no-cache git openssh
+    - git add CHANGELOG.md
+    - git commit -m '[skip ci] Commit automatic created changelog'
+    - mkdir -p ~/.ssh
+    - echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    - git push
+  environment:
+    SSH_KEY:
       from_secret: github_ssh_key
-    remote_name: origin
-    remote: ${DRONE_GIT_SSH_URL}
 
 depends_on:
 - amd64_build
