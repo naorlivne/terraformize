@@ -173,7 +173,7 @@ steps:
     force: false
     commit: true
     commit_message: "[skip ci] Commit automatic created changelog"
-    key:
+    ssh_key:
       from_secret: github_ssh_key
 
 depends_on:
