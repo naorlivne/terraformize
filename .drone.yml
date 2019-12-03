@@ -165,21 +165,6 @@ steps:
     github_user: ${DRONE_REPO_NAMESPACE}
     github_project: ${DRONE_REPO_NAME}
     output_path: CHANGELOG.md
-- name: publish_changelog
-  image: alpine:3.10
-  commands:
-    - apk add --no-cache git openssh
-    - git add CHANGELOG.md
-    - git commit -m '[skip ci] Commit automatic created changelog'
-    - mkdir -p ~/.ssh
-    - echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
-    - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-    - git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-    - git push --set-upstream origin master
-  environment:
-    SSH_KEY:
-      from_secret: github_ssh_key
 
 depends_on:
 - amd64_build
