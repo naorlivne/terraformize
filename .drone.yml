@@ -175,6 +175,7 @@ steps:
     ssh_key:
       from_secret: github_ssh_key
     remote_name: origin
+    remote: ${DRONE_GIT_SSH_URL}
 
 depends_on:
 - amd64_build
