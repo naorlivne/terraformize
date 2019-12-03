@@ -175,9 +175,8 @@ steps:
     - echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan -H github.com >> ~/.ssh/known_hosts
-    - git push --set-upstream origin master
     - git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-    - git push
+    - git push --set-upstream origin master
   environment:
     SSH_KEY:
       from_secret: github_ssh_key
