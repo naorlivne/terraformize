@@ -172,6 +172,8 @@ steps:
     force: false
     commit: true
     commit_message: "[skip ci] Commit automatic created changelog"
+    ssh_key:
+      from_secret: github_ssh_key
 
 depends_on:
 - amd64_build
