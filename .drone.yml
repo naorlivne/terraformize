@@ -107,12 +107,6 @@ steps:
     platforms:
       - linux/amd64
       - linux/arm
-- name: create_changelog
-  image: naorlivne/drone-github-changelog-generator
-  settings:
-    github_user: ${DRONE_REPO_NAMESPACE}
-    github_project: ${DRONE_REPO_NAME}
-    output_path: CHANGELOG.md
 
 depends_on:
 - amd64_build
@@ -168,3 +162,24 @@ trigger:
 depends_on:
 - publish_docker_manifest
 - publish_docker_manifest_version
+
+---
+kind: pipeline
+type: docker
+name: publish_github_release
+
+trigger:
+  event:
+  - push
+
+steps:
+- name: create_changelog
+  image: naorlivne/drone-github-changelog-generator
+  settings:
+    github_user: ${DRONE_REPO_NAMESPACE}
+    github_project: ${DRONE_REPO_NAME}
+    output_path: CHANGELOG.md
+
+depends_on:
+- amd64_build
+- arm_build
