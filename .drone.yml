@@ -33,7 +33,7 @@ steps:
       - linux-amd64-v${DRONE_BUILD_NUMBER}
 
 - name: run_python_unit_test
-  image: linux-amd64-v${DRONE_BUILD_NUMBER}
+  image: naorlivne/terraformize:linux-amd64-v${DRONE_BUILD_NUMBER}
   commands:
   - cp terraform /usr/bin/terraform
   - coverage run -m unittest
