@@ -52,7 +52,7 @@ steps:
   commands:
   - sh /www/test/end2end_tests.sh
   environment:
-    TERRAFORMIZE_MODULES_PATH: "/www/test/test_terraform"
+    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
 
 ---
 kind: pipeline
@@ -110,7 +110,7 @@ steps:
   commands:
   - sh /www/test/end2end_tests.sh
   environment:
-    TERRAFORMIZE_MODULES_PATH: "/www/test/test_terraform"
+    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
 
 ---
 kind: pipeline

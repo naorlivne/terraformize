@@ -27,7 +27,7 @@ curl -f -X POST \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
-    "test_var": "hello-world"
+    "test": "hello-world"
 }'
 
 # checking a terraform apply on a 2nd workspace
@@ -36,7 +36,7 @@ curl -f -X POST \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
-    "test_var": "hello-world"
+    "test": "hello-world"
 }'
 
 # checking terraform destroy
@@ -45,7 +45,7 @@ curl -f -X DELETE \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
-    "test_var": "hello-world"
+    "test": "hello-world"
 }'
 
 # checking terraform destroy on a 2nd workspace
@@ -54,5 +54,5 @@ curl -f -X DELETE \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
-    "test_var": "hello-world"
+    "test": "hello-world"
 }'
