@@ -42,7 +42,7 @@ Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/m
 Running Terraformize is as simple as running a docker container
 
 ```docker
-docker run -d -p 80:80 -v /path/to/my/terraform/module/dir/:/www/terraform_modules/ naorlivne/terraformize
+docker run -d -p 80:80 -v /path/to/my/terraform/module/dir:/www/terraform_modules/ naorlivne/terraformize
 ```
 
 Feel free to skip to the end of the document for a working example that will explain how to use Terraformize
@@ -118,7 +118,7 @@ Terraformize supports 3 authentication methods:
     ```
 3. We will also need to add the folder we created into the Terraformize container, this can be done by many different way (for example creating a container that copies our modules into a new image with the FROM base image being Terraformize base image) but for this example we will simply mount the folder path into the container as we run it:
     ```docker
-    docker run -d -p 80:80 -v `pwd`:/www/terraform_modules/ naorlivne/terraformize
+    docker run -d -p 80:80 -v `pwd`:/www/terraform_modules naorlivne/terraformize
     ```
 4. Now we can run the terraform module by simply calling it which will run `terraform apply` for us (notice how we are passing variables in the body):
     ```shell script
