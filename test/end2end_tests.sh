@@ -17,6 +17,14 @@ gunicorn --config /etc/gunicorn/config.py terraformize_runner:app &
 # we will also need curl, using the -f flag on all of them to return a bash error on any non 2xx response code
 apk add --no-cache curl
 
+# wait until the endpoint becomes active
+set +e
+until $(curl --output /dev/null --silent --head --fail -H 'cache-control: no-cache' http://127.0.0.1/v1/health); do
+    echo "Waiting on Terraformize API to become available..."
+    sleep 1
+done
+set -e
+
 # checking health endpoint
 curl -f -X GET http://127.0.0.1/v1/health
 
@@ -50,7 +58,7 @@ curl -f -X DELETE \
 
 # checking terraform destroy on a 2nd workspace
 curl -f -X DELETE \
-  http://127.0.0.1/v1/terraformize_test/my_other_workspace \
+  http://127.0.0.1/v1/working_test/my_other_workspace \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
