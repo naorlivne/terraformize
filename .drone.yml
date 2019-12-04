@@ -42,8 +42,19 @@ steps:
       - linux-amd64
       - linux-amd64-v${DRONE_BUILD_NUMBER}
 
----
+- name: run_end2end_tests
+  image: naorlivne/terraformize:linux-amd64-v${DRONE_BUILD_NUMBER}
+  when:
+    event:
+      - push
+    branch:
+      - master
+  commands:
+  - sh /www/test/end2end_tests.sh
+  environment:
+    TERRAFORMIZE_MODULES_PATH: "/www/test/test_terraform"
 
+---
 kind: pipeline
 type: docker
 name: arm_build
@@ -88,6 +99,18 @@ steps:
       - linux-arm
       - linux-arm-v${DRONE_BUILD_NUMBER}
     dockerfile: Dockerfile-arm
+
+- name: run_end2end_tests
+  image: naorlivne/terraformize:linux-arm-v${DRONE_BUILD_NUMBER}
+  when:
+    event:
+      - push
+    branch:
+      - master
+  commands:
+  - sh /www/test/end2end_tests.sh
+  environment:
+    TERRAFORMIZE_MODULES_PATH: "/www/test/test_terraform"
 
 ---
 kind: pipeline
