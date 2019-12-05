@@ -42,17 +42,27 @@ steps:
       - linux-amd64
       - linux-amd64-v${DRONE_BUILD_NUMBER}
 
-- name: run_end2end_tests
+- name: run_end2end_tests_terraformize_service
   image: naorlivne/terraformize:linux-amd64-v${DRONE_BUILD_NUMBER}
+  detach: true
+  when:
+    event:
+      - push
+    branch:
+      - master
+  environment:
+    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
+
+- name: run_end2end_tests
+  image: alpine:3.10
   when:
     event:
       - push
     branch:
       - master
   commands:
-  - sh /www/test/end2end_tests.sh
-  environment:
-    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
+  - apk add --no-cache curl
+  - sh /test/end2end_tests.sh
 
 ---
 kind: pipeline
@@ -100,17 +110,27 @@ steps:
       - linux-arm-v${DRONE_BUILD_NUMBER}
     dockerfile: Dockerfile-arm
 
-- name: run_end2end_tests
+- name: run_end2end_tests_terraformize_service
   image: naorlivne/terraformize:linux-arm-v${DRONE_BUILD_NUMBER}
+  detach: true
+  when:
+    event:
+      - push
+    branch:
+      - master
+  environment:
+    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
+
+- name: run_end2end_tests
+  image: alpine:3.10
   when:
     event:
       - push
     branch:
       - master
   commands:
-  - sh /www/test/end2end_tests.sh
-  environment:
-    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
+  - apk add --no-cache curl
+  - sh /test/end2end_tests.sh
 
 ---
 kind: pipeline
