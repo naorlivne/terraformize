@@ -62,7 +62,7 @@ steps:
       - master
   commands:
   - apk add --no-cache curl
-  - sh /test/end2end_tests.sh
+  - sh test/end2end_tests.sh
 
 ---
 kind: pipeline
@@ -130,7 +130,7 @@ steps:
       - master
   commands:
   - apk add --no-cache curl
-  - sh /test/end2end_tests.sh
+  - sh test/end2end_tests.sh
 
 ---
 kind: pipeline
