@@ -17,6 +17,9 @@ class Terraformize:
         self.terraform_bin_path = terraform_bin_path
         self.tf = Terraform(working_dir=folder_path, terraform_bin_path=self.terraform_bin_path)
 
+        # we need to init for a remote backend before we can create a workspace
+        self.tf.init(dir_or_plan=folder_path)
+
         # always create the workspace and switch to it, if workspace already created carries on when it failed creating
         # it again
         self.tf.create_workspace(workspace=workspace)
