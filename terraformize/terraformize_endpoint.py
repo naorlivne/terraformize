@@ -1,4 +1,4 @@
-from terraformize.terraformize_terraform_warpper import *
+from terraformize.terraformize_terraform_wrapper import *
 from terraformize.terraformize_configure import *
 from flask import Flask, request, jsonify
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
