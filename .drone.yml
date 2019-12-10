@@ -6,6 +6,10 @@ platform:
   os: linux
   arch: amd64
 
+services:
+- name: consul
+  image: consul
+
 steps:
 - name: install_terraform
   image: alpine:3.10
@@ -72,6 +76,10 @@ name: arm_build
 platform:
   os: linux
   arch: arm
+
+services:
+- name: consul
+  image: consul
 
 steps:
 - name: install_terraform
