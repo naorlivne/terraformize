@@ -22,7 +22,7 @@ curl -f -X GET http://run_end2end_tests_terraformize_service/v1/health
 
 # checking a terraform apply
 curl -f -X POST \
-  http://run_end2end_tests_terraformize_service/v1/working_test/my_workspace \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_workspace \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -31,7 +31,7 @@ curl -f -X POST \
 
 # checking a terraform apply on a 2nd workspace
 curl -f -X POST \
-  http://run_end2end_tests_terraformize_service/v1/working_test/my_other_workspace \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_other_workspace \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -40,7 +40,7 @@ curl -f -X POST \
 
 # checking terraform destroy
 curl -f -X DELETE \
-  http://run_end2end_tests_terraformize_service/v1/working_test/my_workspace \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_workspace \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
@@ -49,7 +49,7 @@ curl -f -X DELETE \
 
 # checking terraform destroy on a 2nd workspace
 curl -f -X DELETE \
-  http://run_end2end_tests_terraformize_service/v1/working_test/my_other_workspace \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_other_workspace \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{
