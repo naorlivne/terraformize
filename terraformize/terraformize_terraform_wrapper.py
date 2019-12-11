@@ -20,11 +20,8 @@ class Terraformize:
         # we need to init for a remote backend before we can create a workspace
         self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
 
-        # always create the workspace and switch to it, if workspace already created carries on when it failed creating
-        # it again
-        self.tf.create_workspace(workspace=workspace)
-        self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
-            self.tf.set_workspace(workspace=workspace)
+        # terraform will create the workspace if it doesnt exist
+        os.environ['TF_WORKSPACE'] = workspace
 
     def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """
