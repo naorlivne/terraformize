@@ -15,13 +15,13 @@ class BaseTests(TestCase):
     def test_terraformize_terraform_wrapper_init_create_and_use_new_workspace(self):
         terraform_object = Terraformize("test_workspace", "/tmp/", terraform_bin_path=test_bin_location)
         self.assertEqual(terraform_object.init_return_code, 0)
-        self.assertEqual(terraform_object.workspace_return_code, 0)
+        self.assertEqual(os.getenv("TF_WORKSPACE"), "test_workspace")
 
     def test_terraformize_terraform_wrapper_init_use_preexisting_workspace(self):
         Terraformize("test_workspace", "/tmp/", terraform_bin_path=test_bin_location)
         terraform_object = Terraformize("test_workspace", "/tmp/", terraform_bin_path=test_bin_location)
         self.assertEqual(terraform_object.init_return_code, 0)
-        self.assertEqual(terraform_object.workspace_return_code, 0)
+        self.assertEqual(os.getenv("TF_WORKSPACE"), "test_workspace")
 
     def test_terraformize_terraform_wrapper_apply_no_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
