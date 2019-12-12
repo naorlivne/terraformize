@@ -59,7 +59,7 @@ Terraformize uses sane defaults but they can all be easily changed:
 | terraform_binary_path  | TERRAFORM_BINARY_PATH  | None                   | The path to the terraform binary, if None will use the default OS PATH to find it                      |
 | terraform_modules_path | TERRAFORM_MODULES_PATH | /www/terraform_modules | The path to the parent directory where all terraform module directories will be stored at as subdirs   |
 | parallelism            | PARALLELISM            | 10                     | The number of parallel resource operations                                                             |
-| remote_backend           | REMOTE_BACKEND         | false                  | Required if using a remote backend to allow terraform to handle proper local locking                   |
+| remote_backend         | REMOTE_BACKEND         | false                  | Set to true if using a remote backend to allow terraform to handle proper local locking                |
 |                        | CONFIG_DIR             | /www/config            | The path to the directory where configuration files are stored at                                      |
 |                        | HOST                   | 0.0.0.0                | The IP for gunicorn to bind to                                                                         |
 |                        | PORT                   | 80                     | The port for gunicorn to bind to                                                                       |
