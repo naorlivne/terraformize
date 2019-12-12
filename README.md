@@ -164,5 +164,3 @@ Terraformize supports 3 authentication methods:
         "test_var": "hello-world"
     }'
     ```
-
-Show resolved
