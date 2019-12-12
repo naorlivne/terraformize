@@ -19,7 +19,7 @@ class Terraformize:
         self.terraform_bin_path = terraform_bin_path
 
         if remote_backend is True:
-            self.working_path = tempfile.mkdtemp()
+            self.working_path = tempfile.mkdtemp(prefix="tfize-")
             self.tf = Terraform(working_dir=self.working_path, terraform_bin_path=self.terraform_bin_path)
             # using an envvar is the only way to prevent terraform from creating
             # a default.tfstate during init on a remote backend (which causes locking)
