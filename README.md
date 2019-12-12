@@ -61,6 +61,13 @@ Terraformize uses sane defaults but they can all be easily changed:
 | parallelism            | PARALLELISM            | 10                     | The number of parallel resource operations                                                             |
 | remote_backend         | REMOTE_BACKEND         | false                  | Set to true if using a remote backend to allow terraform to handle proper local locking                |
 |                        | CONFIG_DIR             | /www/config            | The path to the directory where configuration files are stored at                                      |
+|                        | HOST                   | 0.0.0.0                | The IP for gunicorn to bind to                                                                         |
+|                        | PORT                   | 80                     | The port for gunicorn to bind to                                                                       |
+|                        | WORKER_CLASS           | sync                   | The gunicorn class to use                                                                              |
+|                        | WORKERS                | 1                      | Number of gunicorn workers                                                                             |
+|                        | THREADS                | 1                      | Number of gunicorn threads                                                                             |
+|                        | PRELOAD                | False                  | If gunicorn should preload the code                                                                    |
+|                        | LOG_LEVEL              | error                  | The log level for gunicorn                                                                             |
 
 
 The easiest way to change a default value is to pass the envvar key\value to the docker container with the `-e` cli arg but if you want you can also create a configuration file with the settings you wish (in whatever of the standard format you desire) & place it in the /www/config folder inside the container.
@@ -158,3 +165,5 @@ Terraformize supports 3 authentication methods:
         "test_var": "hello-world"
     }'
     ```
+
+Show resolved
