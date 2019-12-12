@@ -32,7 +32,7 @@ class Terraformize:
             self.tf.create_workspace(workspace=workspace)
             self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = self.tf.set_workspace(workspace=workspace)
 
-    def apply(self, variables: Optional[dict] = {}, parallelism: int = 10) -> Tuple[str, str, str]:
+    def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """
         Will run a terraform apply on a workspace & will pass all variables to the terraform apply as terraform
         variables
@@ -46,11 +46,14 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform apply
             :return stderr: the stderr stream of the terraform apply
         """
+        if variables is None:
+            variables = {}
+
         return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True,
                                                     parallelism=parallelism)
         return return_code, stdout, stderr
 
-    def destroy(self, variables: Optional[dict] = {}, parallelism: int = 10) -> Tuple[str, str, str]:
+    def destroy(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """
         Will run a terraform destroy on a workspace will pass all variables to the terraform destroy as terraform
         variables, not deleting the workspace as one might want to keep historical data or have multiple modules under
@@ -65,6 +68,9 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform destroy
             :return stderr: the stderr stream of the terraform destroy
         """
+        if variables is None:
+            variables = {}
+
         return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, var=variables, auto_approve=True,
                                                       parallelism=parallelism)
         return return_code, stdout, stderr
