@@ -13,10 +13,8 @@ ENV PYTHONUNBUFFERED=1
 # set terraform automation flag
 ENV TF_IN_AUTOMATION=true
 
-# install required packages - requires build-base due to gevent GCC compiler requirements
-RUN apk add --no-cache \
-	build-base \
-	libffi-dev
+# install required packages
+RUN apk add --no-cache libffi-dev
 
 # copy terraform binary
 COPY --from=terraform /bin/terraform /usr/local/bin/terraform
