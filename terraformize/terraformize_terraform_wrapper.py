@@ -6,7 +6,8 @@ import shutil
 
 class Terraformize:
 
-    def __init__(self, remote_backend: bool, workspace: str, folder_path: str, terraform_bin_path: Optional[str] = None):
+    def __init__(self, remote_backend: bool, workspace: str, folder_path: str, \
+                 terraform_bin_path: Optional[str] = None):
         """
         Will create a terraform object, create a workspace & init the terraform directory
 
@@ -24,13 +25,15 @@ class Terraformize:
             # using an envvar is the only way to prevent terraform from creating
             # a default.tfstate during init on a remote backend (which causes locking)
             os.environ["TF_WORKSPACE"] = workspace
-            self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(from_module=folder_path, dir_or_plan=self.working_path)
+            self.init_return_code, self.init_stdout, self.init_stderr = \
+                self.tf.init(from_module=folder_path, dir_or_plan=self.working_path)
         else:
             self.tf = Terraform(working_dir=folder_path, terraform_bin_path=self.terraform_bin_path)
             self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
             # create workspace and if failed we assume it already exists
             self.tf.create_workspace(workspace=workspace)
-            self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = self.tf.set_workspace(workspace=workspace)
+            self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
+                self.tf.set_workspace(workspace=workspace)
 
     def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """

@@ -100,7 +100,8 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         "terraform apply"
     """
     try:
-        terraform_object = Terraformize(configuration["remote_backend"], workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
+        terraform_object = Terraformize(configuration["remote_backend"], workspace_name, \
+                                        configuration["terraform_modules_path"] + "/" + module_path,
                                         terraform_bin_path=configuration["terraform_binary_path"])
         terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.apply(
             request.json, configuration["parallelism"]
@@ -139,7 +140,8 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         "terraform destroy"
     """
     try:
-        terraform_object = Terraformize(configuration["remote_backend"], workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
+        terraform_object = Terraformize(configuration["remote_backend"], workspace_name, \
+                                        configuration["terraform_modules_path"] + "/" + module_path,
                                         terraform_bin_path=configuration["terraform_binary_path"])
         terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.destroy(
             request.json, configuration["parallelism"]
