@@ -26,7 +26,7 @@ class BaseTests(TestCase):
         self.assertEqual(terraform_object.workspace_return_code, 0)
 
     def test_terraformize_terraform_wrapper_apply_no_vars(self):
-        terraform_object = Terraformize(False, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(False, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply()
         self.assertEqual(stderr, "")
@@ -35,7 +35,7 @@ class BaseTests(TestCase):
         self.assertIn("test = not_set", stdout)
 
     def test_terraformize_terraform_wrapper_parallelism(self):
-        terraform_object = Terraformize(False, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(False, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply(None, 5)
         self.assertEqual(stderr, "")
@@ -44,7 +44,7 @@ class BaseTests(TestCase):
         self.assertIn("test = not_set", stdout)
 
     def test_terraformize_terraform_wrapper_apply_with_vars(self):
-        terraform_object = Terraformize(False, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(False, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply({"test": "set"})
         self.assertEqual(stderr, "")
@@ -53,7 +53,7 @@ class BaseTests(TestCase):
         self.assertIn("test = set", stdout)
 
     def test_terraformize_terraform_wrapper_destroy_no_vars(self):
-        terraform_object = Terraformize(False, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(False, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.destroy()
         self.assertEqual(stderr, "")
@@ -61,7 +61,7 @@ class BaseTests(TestCase):
         self.assertIn("Destroy complete!", stdout)
 
     def test_terraformize_terraform_wrapper_destroy_parallelism(self):
-        terraform_object = Terraformize(False, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(False, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.destroy(None, 5)
         self.assertEqual(stderr, "")
@@ -69,7 +69,7 @@ class BaseTests(TestCase):
         self.assertIn("Destroy complete!", stdout)
 
     def test_terraformize_terraform_wrapper_destroy_with_vars(self):
-        terraform_object = Terraformize(False, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(False, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.destroy({"test": "set"})
         self.assertEqual(stderr, "")
@@ -77,7 +77,7 @@ class BaseTests(TestCase):
         self.assertIn("Destroy complete!", stdout)
 
     def test_terraformize_terraform_wrapper_remote_backend_cleanup(self):
-        terraform_object = Terraformize(True, "test_workspace", test_files_location, \
+        terraform_object = Terraformize(True, "test_workspace", test_files_location,
                                         terraform_bin_path=test_bin_location)
         terraform_object.cleanup(True)
         self.assertEqual(glob.glob(tempfile.gettempdir() + '/tfize-*'), [])

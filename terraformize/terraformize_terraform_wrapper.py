@@ -6,7 +6,7 @@ import shutil
 
 class Terraformize:
 
-    def __init__(self, remote_backend: bool, workspace: str, folder_path: str, \
+    def __init__(self, remote_backend: bool, workspace: str, folder_path: str,
                  terraform_bin_path: Optional[str] = None):
         """
         Will create a terraform object, create a workspace & init the terraform directory
