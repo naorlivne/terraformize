@@ -3,7 +3,7 @@ chardet==3.0.4
 Click==7.0
 codecov==2.0.15
 configobj==5.0.6
-coverage==4.5.4
+coverage==5.0
 dpath==1.4.2
 Flask==1.1.1
 Flask-HTTPAuth==3.3.0
