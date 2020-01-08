@@ -14,7 +14,7 @@ Jinja2==2.10.3
 MarkupSafe==1.1.1
 parse-it==3.3.2
 ply==3.11
-pyhcl==0.3.15
+pyhcl==0.4.0
 python-dotenv==0.10.3
 python-terraform==0.10.1
 PyYAML==5.3
