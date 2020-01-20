@@ -1,7 +1,8 @@
 from parse_it import ParseIt
+from typing import Optional
 
 
-def read_configurations(config_folder: str = "config"):
+def read_configurations(config_folder: str = "config") -> dict:
     """
     Will create a config dict that includes all of the configurations for terraformize by aggregating from all valid
     config sources (files, envvars, cli args, etc) & using sane defaults on config params that are not declared
@@ -29,7 +30,7 @@ def read_configurations(config_folder: str = "config"):
     return config
 
 
-def auth_enabled(username, password, token):
+def auth_enabled(username: Optional[str], password: Optional[str], token: Optional[str]) -> bool:
     """
     Checks if auth is enabled by making sure if there is a username & password pair or a token configured
 
