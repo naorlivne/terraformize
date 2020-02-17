@@ -216,6 +216,9 @@ steps:
     github_user: ${DRONE_REPO_NAMESPACE}
     github_project: ${DRONE_REPO_NAME}
     output_path: CHANGELOG.md
+  environment:
+    CHANGELOG_GITHUB_TOKEN:
+      from_secret: changelog_github_token
 
 depends_on:
 - amd64_build
