@@ -1,6 +1,6 @@
 certifi==2019.11.28
 chardet==3.0.4
-Click==7.0
+Click==7.1.1
 codecov==2.0.16
 configobj==5.0.6
 coverage==5.0.3
