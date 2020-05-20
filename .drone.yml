@@ -31,6 +31,9 @@ steps:
     token:
       from_secret: codecov_token
     required: true
+    files:
+      - *.xml
+
 
 - name: docker_build_version
   image: plugins/docker
@@ -105,6 +108,9 @@ steps:
     token:
       from_secret: codecov_token
     required: true
+    files:
+      - *.xml
+
 
 - name: docker_build_version
   image: plugins/docker
