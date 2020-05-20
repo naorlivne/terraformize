@@ -32,7 +32,7 @@ steps:
       from_secret: codecov_token
     required: true
     files:
-      - *.xml
+      - "*.xml"
 
 
 - name: docker_build_version
@@ -109,7 +109,7 @@ steps:
       from_secret: codecov_token
     required: true
     files:
-      - *.xml
+      - "*.xml"
 
 
 - name: docker_build_version
