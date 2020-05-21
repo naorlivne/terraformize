@@ -24,25 +24,17 @@ steps:
   - apk add --no-cache build-base libffi-dev
   - pip install -r requirements.txt
   - coverage run -m unittest
-
-- name: codecov
-  image: plugins/codecov
-  settings:
-    token:
+  - codecov  --commit=$DRONE_COMMIT_SHA
+  environment:
+    CODECOV_TOKEN:
       from_secret: codecov_token
-    required: true
-    files:
-      - ".coverage"
-    paths:
-      - "."
-
 
 - name: docker_build_version
   image: plugins/docker
   when:
     event:
       - push
-    branch: 
+    branch:
       - master
   settings:
     username:
@@ -103,18 +95,10 @@ steps:
   - apk add --no-cache build-base libffi-dev
   - pip install -r requirements.txt
   - coverage run -m unittest
-
-- name: codecov
-  image: plugins/codecov
-  settings:
-    token:
+  - codecov  --commit=$DRONE_COMMIT_SHA
+  environment:
+    CODECOV_TOKEN:
       from_secret: codecov_token
-    required: true
-    files:
-      - ".coverage"
-    paths:
-      - "."
-
 
 - name: docker_build_version
   image: plugins/docker
