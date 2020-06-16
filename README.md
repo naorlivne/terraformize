@@ -108,6 +108,7 @@ Terraformize supports 3 authentication methods:
     ```shell script
     mkdir terraformize_test
     ```
+   Make sure **not** to `cd` into the folder as we will be mounting it into the container from the parent folder in a couple of steps
 2. Now we need a valid terraform configuration in it, if it works in terraform it will work with terraformize but for this example we will keep it simple with a single `terraformize_test/test.tf` file:
     ```hcl-terraform
     resource "null_resource" "test" {
