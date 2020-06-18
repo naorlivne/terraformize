@@ -18,7 +18,7 @@ pyhcl==0.4.4
 python-dotenv==0.13.0
 python-terraform==0.10.1
 PyYAML==5.3.1
-requests==2.23.0
+requests==2.24.0
 six==1.15.0
 toml==0.10.1
 urllib3==1.25.9
