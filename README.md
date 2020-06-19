@@ -67,6 +67,7 @@ Terraformize uses sane defaults but they can all be easily changed:
 |                        | THREADS                | 1                      | Number of gunicorn threads                                                                             |
 |                        | PRELOAD                | False                  | If gunicorn should preload the code                                                                    |
 |                        | LOG_LEVEL              | error                  | The log level for gunicorn                                                                             |
+|                        | TIMEOUT                | 600                    | The timeout for gunicorn, if your terraform run takes longer then thisou'll need to increase this      |
 
 
 The easiest way to change a default value is to pass the envvar key\value to the docker container with the `-e` cli arg but if you want you can also create a configuration file with the settings you wish (in whatever of the standard format you desire) & place it in the /www/config folder inside the container.

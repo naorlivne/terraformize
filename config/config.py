@@ -9,7 +9,7 @@ worker_class = os.getenv("WORKER_CLASS", "sync")
 workers = os.getenv("WORKERS", "1")
 threads = os.getenv("THREADS", "1")
 preload = os.getenv("PRELOAD", False)
-timeout = os.getenv("TIMEOUT", "30")
+timeout = os.getenv("TIMEOUT", "600")
 
 chdir = "/www"
 
