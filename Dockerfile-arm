@@ -1,5 +1,5 @@
 # first need to get the terrafrom binary and extract it
-FROM alpine:3.12.0 AS terraform_installer
+FROM alpine:3.12.1 AS terraform_installer
 ADD https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_arm.zip /tmp/
 RUN unzip /tmp/terraform_*.zip -d /tmp
 
