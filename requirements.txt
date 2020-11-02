@@ -20,7 +20,7 @@ python-terraform==0.10.1
 PyYAML==5.3.1
 requests==2.24.0
 six==1.15.0
-toml==0.10.1
+toml==0.10.2
 urllib3==1.25.11
 Werkzeug==1.0.1
 xmltodict==0.12.0
