@@ -143,6 +143,78 @@ steps:
 ---
 kind: pipeline
 type: docker
+name: arm64_build
+
+platform:
+  os: linux
+  arch: arm64
+
+services:
+- name: consul
+  image: consul
+
+steps:
+- name: install_terraform
+  image: alpine:3.10
+  commands:
+    - wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_arm64.zip -O /tmp/terraform_0.14.0_linux_arm64.zip
+    - unzip /tmp/terraform_*.zip
+
+- name: run_python_unit_test
+  image: python:3.8.0-alpine3.10
+  commands:
+  - cp terraform /usr/bin/terraform
+  - apk add --no-cache build-base libffi-dev
+  - pip install -r requirements.txt
+  - coverage run -m unittest
+  - codecov  --commit=$DRONE_COMMIT_SHA
+  environment:
+    CODECOV_TOKEN:
+      from_secret: codecov_token
+
+- name: docker_build_version
+  image: plugins/docker
+  when:
+    event:
+      - push
+    branch:
+      - master
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: naorlivne/terraformize
+    tags:
+      - linux-arm64
+      - linux-arm64-v${DRONE_BUILD_NUMBER}
+    dockerfile: Dockerfile-arm64
+
+- name: run_end2end_tests_terraformize_service
+  image: naorlivne/terraformize:linux-arm64-v${DRONE_BUILD_NUMBER}
+  detach: true
+  when:
+    event:
+      - push
+    branch:
+      - master
+  environment:
+    TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
+
+- name: run_end2end_tests
+  image: alpine:3.10
+  when:
+    event:
+      - push
+    branch:
+      - master
+  commands:
+  - apk add --no-cache curl
+  - sh test/end2end_tests.sh
+
+---
+kind: pipeline
+type: docker
 name: publish_docker_manifest
 
 trigger:
@@ -164,10 +236,12 @@ steps:
     platforms:
       - linux/amd64
       - linux/arm
+      - linux/arm64
 
 depends_on:
 - amd64_build
 - arm_build
+- arm64_build
 
 ---
 kind: pipeline
@@ -193,10 +267,12 @@ steps:
     platforms:
       - linux/amd64
       - linux/arm
+      - linux/arm64
 
 depends_on:
 - amd64_build
 - arm_build
+- arm64_build
 
 ---
 kind: pipeline
@@ -223,6 +299,7 @@ steps:
 depends_on:
 - amd64_build
 - arm_build
+- arm64_build
 
 ---
 
