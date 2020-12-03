@@ -27,25 +27,25 @@ class BaseTests(TestCase):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply()
         self.assertEqual(return_code, 0)
-        self.assertIn("Apply complete!", stdout.strip("\""))
-        self.assertIn("test = not_set", stdout.strip("\""))
-        self.assertEqual(stderr.strip("\""), "")
+        self.assertIn("Apply complete!", stdout.replace('"', ''))
+        self.assertIn("test = not_set", stdout.replace('"', ''))
+        self.assertEqual(stderr.replace('"', ''), "")
 
     def test_terraformize_terraform_wrapper_parallelism(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply(None, 5)
         self.assertEqual(return_code, 0)
-        self.assertIn("Apply complete!", stdout.strip("\""))
-        self.assertIn("test = not_set", stdout.strip("\""))
-        self.assertEqual(stderr.strip("\""), "")
+        self.assertIn("Apply complete!", stdout.replace('"', ''))
+        self.assertIn("test = not_set", stdout.replace('"', ''))
+        self.assertEqual(stderr.replace('"', ''), "")
 
     def test_terraformize_terraform_wrapper_apply_with_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply({"test": "set"})
         self.assertEqual(return_code, 0)
-        self.assertIn("Apply complete!", stdout.strip("\""))
-        self.assertIn("test = set", stdout.strip("\""))
-        self.assertEqual(stderr.strip("\""), "")
+        self.assertIn("Apply complete!", stdout.replace('"', ''))
+        self.assertIn("test = set", stdout.replace('"', ''))
+        self.assertEqual(stderr.replace('"', ''), "")
 
     def test_terraformize_terraform_wrapper_destroy_no_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
