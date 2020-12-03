@@ -12,7 +12,7 @@ services:
 
 steps:
 - name: install_terraform
-  image: alpine3.12
+  image: alpine:3.12
   commands:
   - wget https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_amd64.zip -O /tmp/terraform_0.12.18_linux_amd64.zip
   - unzip /tmp/terraform_*.zip
@@ -58,7 +58,7 @@ steps:
     TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
 
 - name: run_end2end_tests
-  image: alpine3.12
+  image: alpine:3.12
   when:
     event:
       - push
@@ -83,7 +83,7 @@ services:
 
 steps:
 - name: install_terraform
-  image: alpine3.12
+  image: alpine:3.12
   commands:
     - wget https://releases.hashicorp.com/terraform/0.12.18/terraform_0.12.18_linux_arm.zip -O /tmp/terraform_0.12.18_linux_arm.zip
     - unzip /tmp/terraform_*.zip
@@ -130,7 +130,7 @@ steps:
     TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
 
 - name: run_end2end_tests
-  image: alpine3.12
+  image: alpine:3.12
   when:
     event:
       - push
@@ -155,7 +155,7 @@ services:
 
 steps:
 - name: install_terraform
-  image: alpine3.12
+  image: alpine:3.12
   commands:
     - wget https://releases.hashicorp.com/terraform/0.14.0/terraform_0.14.0_linux_arm64.zip -O /tmp/terraform_0.14.0_linux_arm64.zip
     - unzip /tmp/terraform_*.zip
@@ -202,7 +202,7 @@ steps:
     TERRAFORM_MODULES_PATH: "/www/test/test_terraform"
 
 - name: run_end2end_tests
-  image: alpine3.12
+  image: alpine:3.12
   when:
     event:
       - push
