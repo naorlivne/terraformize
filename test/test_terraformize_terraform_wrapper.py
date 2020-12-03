@@ -26,6 +26,8 @@ class BaseTests(TestCase):
     def test_terraformize_terraform_wrapper_apply_no_vars(self):
         terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply()
+        print("START DEBUG")
+        print("return code: " + str(return_code) + "stdout: " + str(stdout) + "stderr: " + str(stderr))
         self.assertEqual(return_code, 0)
         self.assertIn("Apply complete!", stdout)
         self.assertIn("test = not_set", stdout)
