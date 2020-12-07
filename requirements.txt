@@ -12,7 +12,7 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
-parse-it==3.4.0
+parse-it==3.5.0
 ply==3.11
 pyhcl==0.4.4
 python-dotenv==0.15.0
