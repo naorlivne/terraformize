@@ -1,7 +1,7 @@
 certifi==2020.12.5
 chardet==4.0.0
 Click==7.1.2
-codecov==2.1.10
+codecov==2.1.11
 configobj==5.0.6
 coverage==5.3
 dpath==2.0.1
