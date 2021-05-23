@@ -11,7 +11,7 @@ gunicorn==20.1.0
 idna==2.10
 itsdangerous==2.0.1
 Jinja2==2.11.3
-MarkupSafe==1.1.1
+MarkupSafe==2.0.1
 parse-it==3.7.0
 ply==3.11
 pyhcl==0.4.4
