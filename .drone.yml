@@ -79,7 +79,7 @@ platform:
 
 services:
 - name: consul
-  image: consul
+  image: consul:1.9.6
 
 steps:
 - name: install_terraform
