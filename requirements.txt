@@ -10,7 +10,7 @@ Flask-HTTPAuth==4.4.0
 gunicorn==20.1.0
 idna==3.2
 itsdangerous==2.0.1
-Jinja2==3.0.1
+Jinja2==3.0.2
 MarkupSafe==2.0.1
 parse-it==2021.9.11.18.48
 ply==3.11
