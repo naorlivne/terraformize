@@ -4,7 +4,7 @@ Click==8.0.4
 codecov==2.1.12
 configobj==5.0.6
 coverage==6.3.2
-dpath==2.0.5
+dpath==2.0.6
 Flask==2.0.3
 Flask-HTTPAuth==4.5.0
 gunicorn==20.1.0
