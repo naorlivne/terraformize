@@ -70,10 +70,10 @@ class Terraformize:
             :return stdout: the stdout stream of the terraform destroy
             :return stderr: the stderr stream of the terraform destroy
         """
-        # we need to init for a remote backend before we can create a workspace
         # due to https://github.com/beelit94/python-terraform/issues/116 the line below is replaced with a temp
         # workaround and will be returned once everything is back to working order
         # return_code, stdout, stderr = self.tf.destroy(no_color=IsFlagged, var=variables, auto_approve=True,
         #                                              parallelism=parallelism)
-        return_code, stdout, stderr = self.tf.cmd("destroy -auto-approve -no-color -parallelism=" + str(parallelism))
+        return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True,
+                                                    parallelism=parallelism, destroy=True)
         return return_code, stdout, stderr
