@@ -18,7 +18,12 @@ class Terraformize:
         self.tf = Terraform(working_dir=folder_path, terraform_bin_path=self.terraform_bin_path)
 
         # we need to init for a remote backend before we can create a workspace
-        self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
+        # due to https://github.com/beelit94/python-terraform/issues/116 the line below is replaced with a temp
+        # workaround and will be returned once everything is back to working order
+        # self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
+        self.init_return_code, self.init_stdout, self.init_stderr = self.tf.cmd("-chdir=" + folder_path +
+                                                                                " init -reconfigure -backend=true")
+        # self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
 
         # always create the workspace and switch to it, if workspace already created carries on when it failed creating
         # it again
