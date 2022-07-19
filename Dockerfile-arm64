@@ -1,10 +1,10 @@
 # first need to get the terrafrom binary and extract it
 FROM python:3.10.0b2-alpine3.12 AS terraform_installer
-ADD https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_arm64.zip /tmp/
+ADD https://releases.hashicorp.com/terraform/1.2.5/terraform_1.2.5_linux_arm64.zip /tmp/
 RUN unzip /tmp/terraform_*.zip -d /tmp
 
 # it's offical so i'm using it + alpine so damn small
-FROM python:3.10.0b2-alpine3.12
+FROM python:3.10.5-alpine3.16
 
 #exposing the port
 EXPOSE 80

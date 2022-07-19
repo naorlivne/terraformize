@@ -2,7 +2,7 @@
 FROM hashicorp/terraform:1.2.5 AS terraform
 
 # it's offical so i'm using it + alpine so damn small
-FROM python:3.10.0b2-alpine3.12
+FROM python:3.10.5-alpine3.16
 
 # exposing the port
 EXPOSE 80

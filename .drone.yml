@@ -14,11 +14,11 @@ steps:
 - name: install_terraform
   image: alpine:3.12
   commands:
-  - wget https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_amd64.zip -O /tmp/terraform_1.1.9_linux_amd64.zip
+  - wget https://releases.hashicorp.com/terraform/1.2.5/terraform_1.2.5_linux_amd64.zip -O /tmp/terraform_1.2.5_linux_amd64.zip
   - unzip /tmp/terraform_*.zip
 
 - name: run_python_unit_test
-  image: python:3.9.0-alpine3.12
+  image: python:3.10.5-alpine3.16
   commands:
   - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
@@ -85,11 +85,11 @@ steps:
 - name: install_terraform
   image: alpine:3.12
   commands:
-    - wget https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_arm.zip -O /tmp/terraform_1.1.9_linux_arm.zip
+    - wget https://releases.hashicorp.com/terraform/1.2.25/terraform_1.2.25_linux_arm.zip -O /tmp/terraform_1.2.25_linux_arm.zip
     - unzip /tmp/terraform_*.zip
 
 - name: run_python_unit_test
-  image: python:3.9.0-alpine3.12
+  image: python:3.10.5-alpine3.16
   commands:
   - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
@@ -157,11 +157,11 @@ steps:
 - name: install_terraform
   image: alpine:3.12
   commands:
-    - wget https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_arm64.zip -O /tmp/terraform_1.1.9_linux_arm64.zip
+    - wget https://releases.hashicorp.com/terraform/1.2.25/terraform_1.2.25_linux_arm64.zip -O /tmp/terraform_1.2.25_linux_arm64.zip
     - unzip /tmp/terraform_*.zip
 
 - name: run_python_unit_test
-  image: python:3.9.0-alpine3.12
+  image: python:3.10.5-alpine3.16
   commands:
   - cp terraform /usr/bin/terraform
   - apk add --no-cache build-base libffi-dev
