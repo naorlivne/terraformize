@@ -4,7 +4,7 @@ ADD https://releases.hashicorp.com/terraform/1.2.5/terraform_1.2.5_linux_arm.zip
 RUN unzip /tmp/terraform_*.zip -d /tmp
 
 # it's offical so i'm using it + alpine so damn small
-FROM python:3.10.5-alpine3.16
+FROM python:3.10.0-alpine3.13
 
 #exposing the port
 EXPOSE 80
