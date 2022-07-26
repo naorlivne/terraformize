@@ -2,7 +2,7 @@
 ######################################################################################################################
 #
 # end2end tests that are designed to run on the completed container and simulate real world usage of the terraformize
-# service in order to provide safty againt issues that are somehow missed in unit tests (for example issues with
+# service in order to provide safety against issues that are somehow missed in unit tests (for example issues with
 # container versions).
 #
 ######################################################################################################################
