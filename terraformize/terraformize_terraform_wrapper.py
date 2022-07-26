@@ -25,11 +25,21 @@ class Terraformize:
                                                                                 " init -reconfigure -backend=true")
         # self.init_return_code, self.init_stdout, self.init_stderr = self.tf.init(dir_or_plan=folder_path)
 
-        # always create the workspace and switch to it, if workspace already created carries on when it failed creating
-        # it again
-        self.tf.create_workspace(workspace=workspace)
-        self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
-            self.tf.set_workspace(workspace=workspace)
+        # create the workspace if it does not exist, using while not if due to weird bug of it not always catching
+        # again using workaround due to the 0.14 version of python-terraform not yet published to pypi and not wanting
+        # to complicate endusers with package install nightmares, this should be set to the following once new ver is
+        # in pypi: `while workspace not in self.tf.list_workspace():`
+        # this should work as create_workspace can fail silently without breaking anything
+        if self.tf.show_workspace()[1].rstrip('\n') != workspace:
+            self.tf.create_workspace(workspace=workspace)
+
+        # set the workspace if it is not being used currently, using while not if due to weird bug of it not always
+        # catching, commenting it out due to the workaround above, once the line above is configured to run if
+        # `while workspace not in self.tf.list_workspace():` this line should be commented out to seperate the create
+        # and set steps of the workspace part
+        # while self.tf.show_workspace()[1].rstrip('\n') != workspace:
+            self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
+                self.tf.set_workspace(workspace=workspace)
 
     def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
         """
