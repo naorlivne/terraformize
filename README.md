@@ -11,6 +11,7 @@ Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/m
 * REST API to run:
     * `terraform apply`
     * `terraform destroy`
+    * `terraform plan`
 * No code changes needed, supports 100% of all terraform modules unmodified
 * Built in support for multiple terraform workspaces
 * Can pass variables to the terraform run via the request body (passed as a -var arg to the `terraform apply` or `terraform destroy` command)
@@ -97,6 +98,12 @@ Terraformize supports 3 authentication methods:
     * Returns 200 HTTP status code if everything is ok, 404 if you gave it a non existing module_folder_name path & 400 if the `terraform destroy` ran but failed to make all needed modifications
     * Also returns a JSON body of `{"init_stdout": "...", "init_stderr": "...", "stderr": "...", "stdout": "..."}` with the stderr & stdout of the `terraform destroy` & `terraform init` run
     * In order to preserve the history of terraform runs in your backend the workspace is not deleted automatically, only the infrastructure is destroyed
+* POST /v1/module_folder_name/workspace_name/plan
+    * runs `terraform plan` for you
+    * takes care of auto approval of the run, auto init & workspace switching as needed
+    * takes variables which are passed to `terraform apply` as a JSON in the body of the message in the format of `{"var_key1": "var_value1", "var_key2": "var_value2"}`
+    * Returns 200 HTTP status code if everything is ok, 404 if you gave it a non existing module_folder_name path & 400 if the `terraform apply` ran but failed to plan all needed modifications
+    * Also returns a JSON body of `{"init_stdout": "...", "init_stderr": "...", "stderr": "...", "stdout": "...", "exit_code": "0""}` with the stderr & stdout of the `terraform apply` & `terraform init` run
 * GET /v1/health
     * Returns 200 HTTP status code
     * Also returns a JSON body of {"healthy": true}

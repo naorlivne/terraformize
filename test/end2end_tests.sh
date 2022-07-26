@@ -19,6 +19,14 @@ done
 # checking health endpoint
 curl --fail-with-body -X GET http://run_end2end_tests_terraformize_service/v1/health
 
+# checking a terraform plan
+curl --fail-with-body -X POST \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_workspace/plan \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{
+    "test": "hello-world"
+}'
 
 # checking a terraform apply
 curl --fail-with-body -X POST \
@@ -32,6 +40,15 @@ curl --fail-with-body -X POST \
 # checking a terraform apply on a 2nd workspace
 curl --fail-with-body -X POST \
   http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_other_workspace \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{
+    "test": "hello-world"
+}'
+
+# checking a terraform plan on a 2nd workspace after apply
+curl --fail-with-body -X POST \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_other_workspace/plan \
   -H 'Content-Type: application/json' \
   -H 'cache-control: no-cache' \
   -d '{

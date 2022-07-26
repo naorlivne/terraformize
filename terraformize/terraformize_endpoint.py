@@ -16,17 +16,19 @@ multi_auth = MultiAuth(basic_auth, token_auth)
 configuration = read_configurations(os.getenv("CONFIG_DIR", "config"))
 
 
-def terraform_return_code_to_http_code(terraform_return_code: int) -> int:
+def terraform_return_code_to_http_code(terraform_return_code: int, plan_mode=False) -> int:
     """
     Converts the exit code given by terraform to HTTP return code
 
     Arguments:
         :param terraform_return_code: the exit code given by terraform
+        :param plan_mode: default to False, if True will assume the result is exit code from "terraform plan" which is
+        a bit different the standard TF exit codes
 
     Returns:
-        :return return_code: 200 if terraform exit code was 0, 400 otherwise
+        :return return_code: 200 if terraform exit code was 0 (or 2 in plan mode), 400 otherwise
     """
-    if terraform_return_code == 0:
+    if terraform_return_code == 0 or (plan_mode is True and terraform_return_code == 2):
         return_code = 200
     else:
         return_code = 400
@@ -77,6 +79,45 @@ def verify_token(token: Optional[str]) -> bool:
     # in any other case return false
     else:
         return False
+
+
+@app.route('/' + API_VERSION + '/<module_path>/<workspace_name>/plan', methods=["POST"])
+@multi_auth.login_required
+def plan_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
+    """
+    A REST endpoint to plan terraform modules at a given module path inside the main module directory path at a given
+    workspace
+
+    Arguments:
+        :param module_path:  the name of the subdirectory for the module inside the "terraform_modules_path" to run
+        "terraform plan" at
+        :param workspace_name: the name of the workspace to run "terraform plan" at
+
+    Returns:
+        :return return_body: a JSON of the terraform exit code, stdout & stderr from the terraform run
+        :return terraform_return_code: the terraform return code
+
+    Exceptions:
+        :except FileNotFoundError: will return HTTP 404 with a JSON of the stderr it catch from "terraform init" or
+        "terraform plan"
+    """
+    try:
+        terraform_object = Terraformize(workspace_name, configuration["terraform_modules_path"] + "/" + module_path,
+                                        terraform_bin_path=configuration["terraform_binary_path"])
+        terraform_return_code, terraform_stdout, terraform_stderr = terraform_object.plan(
+            request.get_json(silent=True), configuration["parallelism"]
+        )
+        return_body = jsonify({
+            "init_stdout": terraform_object.init_stdout,
+            "init_stderr": terraform_object.init_stderr,
+            "stdout": terraform_stdout,
+            "stderr": terraform_stderr,
+            "exit_code": terraform_return_code
+        })
+        terraform_return_code = terraform_return_code_to_http_code(int(terraform_return_code), plan_mode=True)
+        return return_body, terraform_return_code
+    except FileNotFoundError as error_log:
+        return jsonify({"error": str(error_log)}), 404
 
 
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["POST"])

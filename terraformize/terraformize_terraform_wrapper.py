@@ -77,3 +77,23 @@ class Terraformize:
         return_code, stdout, stderr = self.tf.apply(no_color=IsFlagged, var=variables, skip_plan=True,
                                                     parallelism=parallelism, destroy=True)
         return return_code, stdout, stderr
+
+    def plan(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
+        """
+        Will run a terraform plan on a workspace & will pass all variables to the terraform plan as terraform
+        variables
+
+        Arguments:
+            :param variables: the variables to pass to the terraform plan command
+            :param parallelism: the number of parallel resource operations
+
+        Returns:
+            :return return_code: the return code of the terraform plan
+            :return stdout: the stdout stream of the terraform plan
+            :return stderr: the stderr stream of the terraform plan
+        """
+        if variables is None:
+            variables = {}
+
+        return_code, stdout, stderr = self.tf.plan(no_color=IsFlagged, var=variables, parallelism=parallelism)
+        return return_code, stdout, stderr

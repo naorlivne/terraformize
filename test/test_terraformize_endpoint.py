@@ -16,9 +16,25 @@ class BaseTests(TestCase):
         reply = terraform_return_code_to_http_code(0)
         self.assertEqual(reply, 200)
 
-    def test_terraformize_endpoint_terraform_return_code_to_http_code_non_0_to_400(self):
+    def test_terraformize_endpoint_terraform_return_code_to_http_code_1_to_400(self):
         reply = terraform_return_code_to_http_code(1)
         self.assertEqual(reply, 400)
+
+    def test_terraformize_endpoint_terraform_return_code_to_http_code_2_to_400(self):
+        reply = terraform_return_code_to_http_code(2)
+        self.assertEqual(reply, 400)
+
+    def test_terraformize_endpoint_terraform_return_code_to_http_code_0_to_200_plan_mode(self):
+        reply = terraform_return_code_to_http_code(0, plan_mode=True)
+        self.assertEqual(reply, 200)
+
+    def test_terraformize_endpoint_terraform_return_code_to_http_code_1_to_400_plan_mode(self):
+        reply = terraform_return_code_to_http_code(1, plan_mode=True)
+        self.assertEqual(reply, 400)
+
+    def test_terraformize_endpoint_terraform_return_code_to_http_code_2_to_200_plan_mode(self):
+        reply = terraform_return_code_to_http_code(2, plan_mode=True)
+        self.assertEqual(reply, 200)
 
     def test_terraformize_endpoint_verify_password_auth_enabled_is_false(self):
         configuration["auth_enabled"] = False
@@ -76,6 +92,19 @@ class BaseTests(TestCase):
             self.assertEqual(terraform_return_code, 404)
             self.assertEqual(return_body.json, expected_body)
 
+    def test_terraformize_endpoint_plan_missing_module(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        expected_body = {
+            'error': "[Errno 2] No such file or directory: '" +
+                     test_files_location + "/fake_test_module'"
+        }
+        with app.test_request_context('/v1/fake_test_module/test_workspace/plan', method='POST'):
+            self.assertEqual(request.path, '/v1/fake_test_module/test_workspace/plan')
+            return_body, terraform_return_code = plan_terraform("fake_test_module", "test_workspace")
+            self.assertEqual(terraform_return_code, 404)
+            self.assertEqual(return_body.json, expected_body)
+
     def test_terraformize_endpoint_destroy_missing_module(self):
         configuration["terraform_modules_path"] = test_files_location
         configuration["terraform_binary_path"] = test_bin_location
@@ -97,6 +126,14 @@ class BaseTests(TestCase):
             return_body, terraform_return_code = apply_terraform("working_test", "test_workspace")
             self.assertEqual(terraform_return_code, 200)
 
+    def test_terraformize_endpoint_plan_run(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        with app.test_request_context('/v1/working_test/test_workspace/plan', method='POST'):
+            self.assertEqual(request.path, '/v1/working_test/test_workspace/plan')
+            return_body, terraform_return_code = plan_terraform("working_test", "test_workspace")
+            self.assertEqual(terraform_return_code, 200)
+
     def test_terraformize_endpoint_destroy_run(self):
         configuration["terraform_modules_path"] = test_files_location
         configuration["terraform_binary_path"] = test_bin_location
@@ -112,6 +149,14 @@ class BaseTests(TestCase):
         with app.test_request_context('/v1/non_runnable_test/test_workspace', method='POST'):
             self.assertEqual(request.path, '/v1/non_runnable_test/test_workspace')
             return_body, terraform_return_code = apply_terraform("non_runnable_test", "test_workspace")
+            self.assertEqual(terraform_return_code, 400)
+
+    def test_terraformize_endpoint_plan_raise_exception(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        with app.test_request_context('/v1/non_runnable_test/test_workspace/plan', method='POST'):
+            self.assertEqual(request.path, '/v1/non_runnable_test/test_workspace/plan')
+            return_body, terraform_return_code = plan_terraform("non_runnable_test", "test_workspace")
             self.assertEqual(terraform_return_code, 400)
 
     def test_terraformize_endpoint_destroy_raise_exception(self):

@@ -67,3 +67,18 @@ class BaseTests(TestCase):
         self.assertEqual(return_code, 0)
         self.assertIn("complete!", stdout)
         self.assertEqual(stderr, "")
+
+    def test_terraformize_terraform_wrapper_plan_no_vars(self):
+        terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
+        return_code, stdout, stderr = terraform_object.plan()
+        self.assertEqual(return_code, 0)
+        self.assertIn("compared your real infrastructure against your configuration", stdout.replace('"', ''))
+        self.assertEqual(stderr.replace('"', ''), "")
+
+    def test_terraformize_terraform_wrapper_plan_with_vars(self):
+        terraform_object = Terraformize("test_workspace", test_files_location, terraform_bin_path=test_bin_location)
+        return_code, stdout, stderr = terraform_object.plan({"test": "set"})
+        self.assertEqual(return_code, 2)
+        self.assertIn("without changing any real infrastructure", stdout.replace('"', ''))
+        self.assertIn("test = not_set -> set", stdout.replace('"', ''))
+        self.assertEqual(stderr.replace('"', ''), "")
