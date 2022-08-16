@@ -190,7 +190,8 @@ def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
             "stdout": terraform_stdout,
             "stderr": terraform_stderr
         })
-        return return_body, terraform_return_code_to_http_code(int(terraform_return_code))
+        terraform_return_code = terraform_return_code_to_http_code(int(terraform_return_code))
+        return return_body, terraform_return_code
     except FileNotFoundError as error_log:
         return jsonify({"error": str(error_log)}), 404
 
