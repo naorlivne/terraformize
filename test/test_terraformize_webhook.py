@@ -20,12 +20,12 @@ class BaseTests(TestCase):
         with requests_mock.Mocker() as request_mocker:
             request_mocker.post('https://my_total_real_webhook_url/whatever',
                                 status_code=200)
-            send_webhook_result("https://my_total_real_webhook_url/whatever", "test1", "test2", "test3", "test4", 0,
-                                "ec743bc4-0724-4f44-9ad3-5814071faddf")
+            send_webhook_result("https://my_total_real_webhook_url/whatever", "init_stdout", "init_stderr", "stdout",
+                                "stderr", 0, "ec743bc4-0724-4f44-9ad3-5814071faddf")
             webhook_history = request_mocker.request_history
             webhook_request_body = webhook_history[0].body
             self.assertTrue(request_mocker.called)
             self.assertEqual(request_mocker.call_count, 1)
-            self.assertEqual('{"init_stdout": "test1", "init_stderr": "test2", "stdout": "test3", "stderr": "test4", '
-                             '"terraform_return_code": 0, "request_uuid": "ec743bc4-0724-4f44-9ad3-5814071faddf"}',
-                             webhook_request_body)
+            self.assertEqual('{"init_stdout": "init_stdout", "init_stderr": "init_stderr", "stdout": "stdout", '
+                             '"stderr": "stderr", "terraform_return_code": 0, '
+                             '"request_uuid": "ec743bc4-0724-4f44-9ad3-5814071faddf"}', webhook_request_body)
