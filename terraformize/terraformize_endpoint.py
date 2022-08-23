@@ -25,7 +25,7 @@ def long_running_task(**kwargs):
     response to a webhook
 
     Arguments:
-        :param command: plan/destory/apply - the terraform command to run
+        :param command: plan/destroy/apply - the terraform command to run
         :param variables: the body of the variables to pass to the terraform command
         :param module_path: the path to the module to run
         :param workspace_name: name of terraform workspace

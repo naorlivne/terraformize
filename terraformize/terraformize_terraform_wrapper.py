@@ -41,7 +41,7 @@ class Terraformize:
             self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
                 self.tf.set_workspace(workspace=workspace)
 
-    def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
+    def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[int, str, str]:
         """
         Will run a terraform apply on a workspace & will pass all variables to the terraform apply as terraform
         variables
@@ -62,7 +62,7 @@ class Terraformize:
                                                     parallelism=parallelism)
         return return_code, stdout, stderr
 
-    def destroy(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
+    def destroy(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[int, str, str]:
         """
 
         Arguments:
@@ -88,7 +88,7 @@ class Terraformize:
                                                     parallelism=parallelism, destroy=True)
         return return_code, stdout, stderr
 
-    def plan(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[str, str, str]:
+    def plan(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[int, str, str]:
         """
         Will run a terraform plan on a workspace & will pass all variables to the terraform plan as terraform
         variables
