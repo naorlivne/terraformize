@@ -120,7 +120,7 @@ def verify_token(token: Optional[str]) -> bool:
         return False
 
 
-# TODO - finish this! (thread plan unit tests & documentation)
+# TODO - finish this! (thread plan unit tests)
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>/plan', methods=["POST"])
 @multi_auth.login_required
 def plan_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
@@ -175,7 +175,7 @@ def plan_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         return jsonify({"error": str(error_log)}), 404
 
 
-# TODO - finish this! (thread unit tests & documentation)
+# TODO - finish this! (thread apply unit tests)
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["POST"])
 @multi_auth.login_required
 def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
@@ -227,7 +227,7 @@ def apply_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:
         return jsonify({"error": str(error_log)}), 404
 
 
-# TODO - finish this! (thread unit tests & documentation)
+# TODO - finish this! (thread destroy unit tests)
 @app.route('/' + API_VERSION + '/<module_path>/<workspace_name>', methods=["DELETE"])
 @multi_auth.login_required
 def destroy_terraform(module_path: str, workspace_name: str) -> Tuple[str, int]:

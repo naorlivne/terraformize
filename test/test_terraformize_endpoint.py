@@ -20,8 +20,10 @@ class BaseTests(TestCase):
         long_running_task(command="plan", variables={}, workspace_name="test_workspace",
                           module_path="working_test", webhook_url="http://mytotallyrealwebhook/test",
                           terraform_request_uuid="ec743bc4-0724-4f44-9ad3-5814071faddx")
-        self.assertIn("\"terraform_return_code\": 2", httpretty.last_request().body.decode('ascii'))
-        self.assertIn("ec743bc4-0724-4f44-9ad3-5814071faddx", httpretty.last_request().body.decode('ascii'))
+        self.assertEqual(2, httpretty.last_request().parsed_body['terraform_return_code'])
+        self.assertIn("plan", httpretty.last_request().parsed_body['stdout'])
+        self.assertEqual("ec743bc4-0724-4f44-9ad3-5814071faddx",
+                         httpretty.last_request().parsed_body['request_uuid'])
         httpretty.disable()
         httpretty.reset()
 
@@ -33,8 +35,10 @@ class BaseTests(TestCase):
         long_running_task(command="apply", variables={}, workspace_name="test_workspace",
                           module_path="working_test", webhook_url="http://mytotallyrealwebhook/test",
                           terraform_request_uuid="ec743bc4-0724-4f44-9ad3-5814071fadde")
-        self.assertIn("\"terraform_return_code\": 0", httpretty.last_request().body.decode('ascii'))
-        self.assertIn("ec743bc4-0724-4f44-9ad3-5814071fadde", httpretty.last_request().body.decode('ascii'))
+        self.assertEqual(0, httpretty.last_request().parsed_body['terraform_return_code'])
+        self.assertIn("apply", httpretty.last_request().parsed_body['stdout'])
+        self.assertEqual("ec743bc4-0724-4f44-9ad3-5814071fadde",
+                         httpretty.last_request().parsed_body['request_uuid'])
         httpretty.disable()
         httpretty.reset()
 
@@ -46,8 +50,10 @@ class BaseTests(TestCase):
         long_running_task(command="destroy", variables={}, workspace_name="test_workspace",
                           module_path="working_test", webhook_url="http://mytotallyrealwebhook/test",
                           terraform_request_uuid="ec743bc4-0724-4f44-9ad3-5814071faddf")
-        self.assertIn("\"terraform_return_code\": 0", httpretty.last_request().body.decode('ascii'))
-        self.assertIn("ec743bc4-0724-4f44-9ad3-5814071faddf", httpretty.last_request().body.decode('ascii'))
+        self.assertEqual(0, httpretty.last_request().parsed_body['terraform_return_code'])
+        self.assertIn("destroy", httpretty.last_request().parsed_body['stdout'])
+        self.assertEqual("ec743bc4-0724-4f44-9ad3-5814071faddf",
+                         httpretty.last_request().parsed_body['request_uuid'])
         httpretty.disable()
         httpretty.reset()
 
@@ -165,6 +171,20 @@ class BaseTests(TestCase):
             return_body, terraform_return_code = apply_terraform("working_test", "test_workspace")
             self.assertEqual(terraform_return_code, 200)
 
+    def test_terraformize_endpoint_apply_run_webhook(self):
+        httpretty.enable()
+        httpretty.register_uri(httpretty.POST, "http://mytotallyrealwebhook/test")
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        with app.test_request_context('/v1/working_test/test_workspace?webhook=http://mytotallyrealwebhook/test',
+                                      method='POST'):
+            self.assertEqual(request.path, '/v1/working_test/test_workspace')
+            self.assertEqual(request.args.get('webhook'), 'http://mytotallyrealwebhook/test')
+            return_body, terraform_return_code = apply_terraform("working_test", "test_workspace")
+            self.assertEqual(terraform_return_code, 202)
+            httpretty.disable()
+            httpretty.reset()
+
     def test_terraformize_endpoint_plan_run(self):
         configuration["terraform_modules_path"] = test_files_location
         configuration["terraform_binary_path"] = test_bin_location
@@ -172,6 +192,20 @@ class BaseTests(TestCase):
             self.assertEqual(request.path, '/v1/working_test/test_workspace/plan')
             return_body, terraform_return_code = plan_terraform("working_test", "test_workspace")
             self.assertEqual(terraform_return_code, 200)
+
+    def test_terraformize_endpoint_plan_run_webhook(self):
+        httpretty.enable()
+        httpretty.register_uri(httpretty.POST, "http://mytotallyrealwebhook/test")
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        with app.test_request_context('/v1/working_test/test_workspace/plan?webhook=http://mytotallyrealwebhook/test',
+                                      method='POST'):
+            self.assertEqual(request.path, '/v1/working_test/test_workspace/plan')
+            self.assertEqual(request.args.get('webhook'), 'http://mytotallyrealwebhook/test')
+            return_body, terraform_return_code = plan_terraform("working_test", "test_workspace")
+            self.assertEqual(terraform_return_code, 202)
+            httpretty.disable()
+            httpretty.reset()
 
     def test_terraformize_endpoint_destroy_run(self):
         configuration["terraform_modules_path"] = test_files_location
@@ -181,6 +215,20 @@ class BaseTests(TestCase):
             self.assertEqual(request.path, '/v1/working_test/test_workspace')
             return_body, terraform_return_code = destroy_terraform("working_test", "test_workspace")
             self.assertEqual(terraform_return_code, 200)
+
+    def test_terraformize_endpoint_destroy_run_webhook(self):
+        httpretty.enable()
+        httpretty.register_uri(httpretty.DELETE, "http://mytotallyrealwebhook/test")
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        with app.test_request_context('/v1/working_test/test_workspace?webhook=http://mytotallyrealwebhook/test',
+                                      method='DELETE'):
+            self.assertEqual(request.path, '/v1/working_test/test_workspace')
+            self.assertEqual(request.args.get('webhook'), 'http://mytotallyrealwebhook/test')
+            return_body, terraform_return_code = destroy_terraform("working_test", "test_workspace")
+            self.assertEqual(terraform_return_code, 202)
+            httpretty.disable()
+            httpretty.reset()
 
     def test_terraformize_endpoint_apply_raise_exception(self):
         configuration["terraform_modules_path"] = test_files_location

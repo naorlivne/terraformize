@@ -25,6 +25,7 @@ Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/m
 * No DB needed, all data stored at the terraform backend of your choosing
 * terraformize scales out as much as you need risk free (requires you use a backend that support state locking)
 * AMD64, Arm & Arm64 support
+* (Optional) Ability to have Terraform run on a separate thread and have it return the terraform run result to a (configurable per request) webhook in a non-blocking way
 
 # Possible use cases
 
@@ -91,6 +92,7 @@ Terraformize supports 3 authentication methods:
     * takes variables which are passed to `terraform apply` as a JSON in the body of the message in the format of `{"var_key1": "var_value1", "var_key2": "var_value2"}`
     * Returns 200 HTTP status code if everything is ok, 404 if you gave it a non existing module_folder_name path & 400 if the `terraform apply` ran but failed to make all needed modifications
     * Also returns a JSON body of `{"init_stdout": "...", "init_stderr": "...", "stderr": "...", "stdout": "..."}` with the stderr & stdout of the `terraform apply` & `terraform init` run
+    * If you pass a `webhook` URL paramter  with the address of the webhook terraformize will return a `202` HTTP code with a body of `{{'request_uuid': 'ec743bc4-0724-4f44-9ad3-5814071faddx'}}` to the request then work behind the scene to run terraform in a non blocking way, to result of the terraform run will be sent to the webhook address you configured along with the UUID of the request for you to know which request said result related to
 * DELETE /v1/module_folder_name/workspace_name
     * runs `terraform destroy` for you
     * takes care of auto approval of the run, auto init & workspace switching as needed
@@ -98,12 +100,14 @@ Terraformize supports 3 authentication methods:
     * Returns 200 HTTP status code if everything is ok, 404 if you gave it a non existing module_folder_name path & 400 if the `terraform destroy` ran but failed to make all needed modifications
     * Also returns a JSON body of `{"init_stdout": "...", "init_stderr": "...", "stderr": "...", "stdout": "..."}` with the stderr & stdout of the `terraform destroy` & `terraform init` run
     * In order to preserve the history of terraform runs in your backend the workspace is not deleted automatically, only the infrastructure is destroyed
+    * If you pass a `webhook` URL paramter  with the address of the webhook terraformize will return a `202` HTTP code with a body of `{{'request_uuid': 'ec743bc4-0724-4f44-9ad3-5814071faddx'}}` to the request then work behind the scene to run terraform in a non blocking way, to result of the terraform run will be sent to the webhook address you configured along with the UUID of the request for you to know which request said result related to
 * POST /v1/module_folder_name/workspace_name/plan
     * runs `terraform plan` for you
     * takes care of auto approval of the run, auto init & workspace switching as needed
     * takes variables which are passed to `terraform apply` as a JSON in the body of the message in the format of `{"var_key1": "var_value1", "var_key2": "var_value2"}`
     * Returns 200 HTTP status code if everything is ok, 404 if you gave it a non existing module_folder_name path & 400 if the `terraform apply` ran but failed to plan all needed modifications
     * Also returns a JSON body of `{"init_stdout": "...", "init_stderr": "...", "stderr": "...", "stdout": "...", "exit_code": "0""}` with the stderr & stdout of the `terraform apply` & `terraform init` run
+    * If you pass a `webhook` URL paramter  with the address of the webhook terraformize will return a `202` HTTP code with a body of `{{'request_uuid': 'ec743bc4-0724-4f44-9ad3-5814071faddx'}}` to the request then work behind the scene to run terraform in a non blocking way, to result of the terraform run will be sent to the webhook address you configured along with the UUID of the request for you to know which request said result related to
 * GET /v1/health
     * Returns 200 HTTP status code
     * Also returns a JSON body of {"healthy": true}
