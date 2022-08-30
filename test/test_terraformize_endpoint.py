@@ -2,6 +2,7 @@ from unittest import TestCase
 from terraformize.terraformize_endpoint import *
 import os
 from flask import request
+import httpretty
 
 
 # this will run all tests in relation to the location of this file so that the test_terraform folder will catch
@@ -11,6 +12,44 @@ test_bin_location = os.getenv("TEST_BIN_LOCATION", "/usr/bin/terraform")
 
 
 class BaseTests(TestCase):
+    def test_long_running_task_plan(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        httpretty.enable()
+        httpretty.register_uri(httpretty.POST, "http://mytotallyrealwebhook/test")
+        long_running_task(command="plan", variables={}, workspace_name="test_workspace",
+                          module_path="working_test", webhook_url="http://mytotallyrealwebhook/test",
+                          terraform_request_uuid="ec743bc4-0724-4f44-9ad3-5814071faddx")
+        self.assertIn("\"terraform_return_code\": 2", httpretty.last_request().body.decode('ascii'))
+        self.assertIn("ec743bc4-0724-4f44-9ad3-5814071faddx", httpretty.last_request().body.decode('ascii'))
+        httpretty.disable()
+        httpretty.reset()
+
+    def test_long_running_task_apply(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        httpretty.enable()
+        httpretty.register_uri(httpretty.POST, "http://mytotallyrealwebhook/test")
+        long_running_task(command="apply", variables={}, workspace_name="test_workspace",
+                          module_path="working_test", webhook_url="http://mytotallyrealwebhook/test",
+                          terraform_request_uuid="ec743bc4-0724-4f44-9ad3-5814071fadde")
+        self.assertIn("\"terraform_return_code\": 0", httpretty.last_request().body.decode('ascii'))
+        self.assertIn("ec743bc4-0724-4f44-9ad3-5814071fadde", httpretty.last_request().body.decode('ascii'))
+        httpretty.disable()
+        httpretty.reset()
+
+    def test_long_running_task_destroy(self):
+        configuration["terraform_modules_path"] = test_files_location
+        configuration["terraform_binary_path"] = test_bin_location
+        httpretty.enable()
+        httpretty.register_uri(httpretty.POST, "http://mytotallyrealwebhook/test")
+        long_running_task(command="destroy", variables={}, workspace_name="test_workspace",
+                          module_path="working_test", webhook_url="http://mytotallyrealwebhook/test",
+                          terraform_request_uuid="ec743bc4-0724-4f44-9ad3-5814071faddf")
+        self.assertIn("\"terraform_return_code\": 0", httpretty.last_request().body.decode('ascii'))
+        self.assertIn("ec743bc4-0724-4f44-9ad3-5814071faddf", httpretty.last_request().body.decode('ascii'))
+        httpretty.disable()
+        httpretty.reset()
 
     def test_terraformize_endpoint_terraform_return_code_to_http_code_0_to_200(self):
         reply = terraform_return_code_to_http_code(0)

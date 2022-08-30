@@ -18,7 +18,6 @@ multi_auth = MultiAuth(basic_auth, token_auth)
 configuration = read_configurations(os.getenv("CONFIG_DIR", "config"))
 
 
-# TODO - finish this! (unit tests)
 def long_running_task(**kwargs):
     """
     Used in threading option to run the terraform apply/plan/destroy commands on in it's own thread and return the
