@@ -72,3 +72,12 @@ curl --fail-with-body -X DELETE \
   -d '{
     "test": "hello-world"
 }'
+
+# checking non blocking webhook response
+curl --fail-with-body -X POST \
+  http://run_end2end_tests_terraformize_service/v1/working_test_remote_backend/my_other_workspace/plan?webhook=http://httpbin.org/anything \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{
+    "test": "hello-world"
+}'
