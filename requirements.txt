@@ -17,7 +17,7 @@ MarkupSafe==2.1.1
 parse-it==2022.9.11.11.49
 ply==3.11
 pyhcl==0.4.4
-python-dotenv==0.20.0
+python-dotenv==0.21.0
 python-terraform==0.10.1
 PyYAML==6.0
 requests==2.28.1
