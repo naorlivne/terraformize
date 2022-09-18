@@ -38,6 +38,9 @@ class BaseTests(TestCase):
         terraform_object = Terraformize("workspace" + workspace_uuid, test_files_location,
                                         terraform_bin_path=test_bin_location)
         return_code, stdout, stderr = terraform_object.apply()
+        print(stderr)
+        print(stdout)
+        print(str(return_code))
         self.assertEqual(return_code, 0)
         self.assertIn("Apply complete!", stdout.replace('"', ''))
         self.assertIn("test = not_set", stdout.replace('"', ''))
