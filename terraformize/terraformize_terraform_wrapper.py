@@ -1,5 +1,6 @@
 from python_terraform import *
 from typing import Tuple, Optional
+import time
 
 
 class Terraformize:
@@ -30,16 +31,22 @@ class Terraformize:
         # to complicate endusers with package install nightmares, this should be set to the following once new ver is
         # in pypi: `while workspace not in self.tf.list_workspace():`
         # this should work as create_workspace can fail silently without breaking anything
+        # also adding sleep for a second because it seems like running this commands too quickly sometimes let terraform
+        # use it before the lock has been fully created and fail as a result
         if self.tf.show_workspace()[1].rstrip('\n') != workspace:
             self.tf.create_workspace(workspace=workspace)
+            time.sleep(1)
 
         # set the workspace if it is not being used currently, using while not if due to weird bug of it not always
         # catching, commenting it out due to the workaround above, once the line above is configured to run if
         # `while workspace not in self.tf.list_workspace():` this line should be commented out to seperate the create
         # and set steps of the workspace part
         # while self.tf.show_workspace()[1].rstrip('\n') != workspace:
+        # also adding sleep for a second because it seems like running this commands too quickly sometimes let terraform
+        # use it before the lock has been fully created and fail as a result
             self.workspace_return_code, self.workspace_stdout, self.workspace_stderr = \
                 self.tf.set_workspace(workspace=workspace)
+            time.sleep(1)
 
     def apply(self, variables: Optional[dict] = None, parallelism: int = 10) -> Tuple[int, str, str]:
         """
