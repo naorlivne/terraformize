@@ -1,4 +1,4 @@
-certifi==2022.9.14
+certifi==2022.9.24
 chardet==5.0.0
 charset-normalizer==2.1.1
 click==8.1.3
