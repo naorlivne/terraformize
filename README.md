@@ -23,7 +23,7 @@ Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/m
 * Health check endpoint included
 * support all terraform backends that support multiple workspaces
 * No DB needed, all data stored at the terraform backend of your choosing
-* terraformize scales out as much as you need risk free (requires you use a backend that support state locking)
+* terraformize scales out as much as you need risk-free (requires you use a backend that support state locking)
 * AMD64, Arm & Arm64 support
 * (Optional) Ability to have Terraform run on a separate thread and have it return the terraform run result to a (configurable per request) webhook in a non-blocking way
 
