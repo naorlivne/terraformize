@@ -27,6 +27,12 @@ def read_configurations(config_folder: str = "config") -> dict:
     config["auth_enabled"] = auth_enabled(config["basic_auth_user"], config["basic_auth_password"],
                                           config["auth_token"])
     config["parallelism"] = parser.read_configuration_variable("parallelism", default_value=10)
+    config["rabbit_url_connection_string"] = parser.read_configuration_variable("rabbit_url_connection_string",
+                                                                                default_value=None)
+    config["rabbit_read_queue"] = parser.read_configuration_variable("rabbit_read_queue",
+                                                                     default_value="terraformize_read_queue")
+    config["rabbit_reply_queue"] = parser.read_configuration_variable("rabbit_reply_queue",
+                                                                      default_value="rabbit_reply_queue")
     return config
 
 
