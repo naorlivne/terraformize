@@ -72,7 +72,7 @@ class RabbitWorker:
                     "init_stderr": terraform_object.init_stderr,
                     "stdout": terraform_stdout,
                     "stderr": terraform_stderr,
-                    "uuid": "test",
+                    "uuid": body_json["uuid"],
                     "exit_code": terraform_return_code
                 }
             elif body_json["run_type"] == "destroy":
@@ -87,7 +87,7 @@ class RabbitWorker:
                     "init_stderr": terraform_object.init_stderr,
                     "stdout": terraform_stdout,
                     "stderr": terraform_stderr,
-                    "uuid": "test",
+                    "uuid": body_json["uuid"],
                     "exit_code": terraform_return_code
                 }
             elif body_json["run_type"] == "plan":
@@ -102,7 +102,7 @@ class RabbitWorker:
                     "init_stderr": terraform_object.init_stderr,
                     "stdout": terraform_stdout,
                     "stderr": terraform_stderr,
-                    "uuid": "test",
+                    "uuid": body_json["uuid"],
                     "exit_code": terraform_return_code
                 }
             else:
