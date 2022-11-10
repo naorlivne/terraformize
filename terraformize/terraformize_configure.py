@@ -1,5 +1,6 @@
 from parse_it import ParseIt
 from typing import Optional
+import os
 
 
 def read_configurations(config_folder: str = "config") -> dict:
@@ -52,3 +53,6 @@ def auth_enabled(username: Optional[str], password: Optional[str], token: Option
         return False
     else:
         return True
+
+
+configuration = read_configurations(os.getenv("CONFIG_DIR", "config"))

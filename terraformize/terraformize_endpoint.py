@@ -4,7 +4,6 @@ from terraformize.terraformize_webhook import *
 from flask import Flask, request, jsonify
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth, MultiAuth
 from typing import Optional, Tuple
-import os
 from threading import Thread
 
 
@@ -15,7 +14,6 @@ app = Flask(__name__)
 basic_auth = HTTPBasicAuth(realm='terraformize')
 token_auth = HTTPTokenAuth('Bearer')
 multi_auth = MultiAuth(basic_auth, token_auth)
-configuration = read_configurations(os.getenv("CONFIG_DIR", "config"))
 
 
 def long_running_task(**kwargs):

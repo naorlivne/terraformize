@@ -147,7 +147,7 @@ Terraformize will then run terraform for you and will return the result of the t
   "init_stderr": "...", 
   "stderr": "...", 
   "stdout": "...", 
-  "exit_code": "0"
+  "exit_code": 0
 }
 ```
 
