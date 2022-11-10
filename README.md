@@ -54,26 +54,26 @@ Feel free to skip to the end of the document for a working example that will exp
 
 Terraformize uses sane defaults but they can all be easily changed:
 
-| value                          | envvar                        | default value          | notes                                                                                                  |
-|--------------------------------|-------------------------------|------------------------|--------------------------------------------------------------------------------------------------------|
-| basic_auth_user                | BASIC_AUTH_USER               | None                   | Basic auth username to use                                                                             |
-| basic_auth_password            | BASIC_AUTH_PASSWORD           | None                   | Basic auth password to use                                                                             |
-| auth_token                     | AUTH_TOKEN                    | None                   | bearer token to use                                                                                    |
-| terraform_binary_path          | TERRAFORM_BINARY_PATH         | None                   | The path to the terraform binary, if None will use the default OS PATH to find it                      |
-| terraform_modules_path         | TERRAFORM_MODULES_PATH        | /www/terraform_modules | The path to the parent directory where all terraform module directories will be stored at as subdirs   |
-| parallelism                    | PARALLELISM                   | 10                     | The number of parallel resource operations                                                             |
-| rabbit_url_connection_string   | RABBIT_URL_CONNECTION_STRING  | None                   | The URL paramters string to connect to RabbitMQ with                                                   |
-| rabbit_read_queue              | RABBIT_READ_QUEUE             | None                   | Name of the queue to read messages from                                                                |
-| rabbit_reply_queue             | RABBIT_REPLY_QUEUE            | None                   | Name of the queue to respond with the run result to                                                    |
-|                                | CONFIG_DIR                    | /www/config            | The path to the directory where configuration files are stored at                                      |
-|                                | HOST                          | 0.0.0.0                | The IP for gunicorn to bind to                                                                         |
-|                                | PORT                          | 80                     | The port for gunicorn to bind to                                                                       |
-|                                | WORKER_CLASS                  | sync                   | The gunicorn class to use                                                                              |
-|                                | WORKERS                       | 1                      | Number of gunicorn workers                                                                             |
-|                                | THREADS                       | 1                      | Number of gunicorn threads                                                                             |
-|                                | PRELOAD                       | False                  | If gunicorn should preload the code                                                                    |
-|                                | LOG_LEVEL                     | error                  | The log level for gunicorn                                                                             |
-|                                | TIMEOUT                       | 600                    | The timeout for gunicorn, if your terraform run takes longer you will need to increase it              |
+| value                          | envvar                        | default value          | notes                                                                                                                   |
+|--------------------------------|-------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| basic_auth_user                | BASIC_AUTH_USER               | None                   | Basic auth username to use                                                                                              |
+| basic_auth_password            | BASIC_AUTH_PASSWORD           | None                   | Basic auth password to use                                                                                              |
+| auth_token                     | AUTH_TOKEN                    | None                   | bearer token to use                                                                                                     |
+| terraform_binary_path          | TERRAFORM_BINARY_PATH         | None                   | The path to the terraform binary, if None will use the default OS PATH to find it                                       |
+| terraform_modules_path         | TERRAFORM_MODULES_PATH        | /www/terraform_modules | The path to the parent directory where all terraform module directories will be stored at as subdirs                    |
+| parallelism                    | PARALLELISM                   | 10                     | The number of parallel resource operations                                                                              |
+| rabbit_url_connection_string   | RABBIT_URL_CONNECTION_STRING  | None                   | The URL paramters string to connect to RabbitMQ with, if unset RabbitMQ will not be used and only API will be possible  |
+| rabbit_read_queue              | RABBIT_READ_QUEUE             | None                   | Name of the queue to read messages from                                                                                 |
+| rabbit_reply_queue             | RABBIT_REPLY_QUEUE            | None                   | Name of the queue to respond with the run result to                                                                     |
+|                                | CONFIG_DIR                    | /www/config            | The path to the directory where configuration files are stored at                                                       |
+|                                | HOST                          | 0.0.0.0                | The IP for gunicorn to bind to                                                                                          |
+|                                | PORT                          | 80                     | The port for gunicorn to bind to                                                                                        |
+|                                | WORKER_CLASS                  | sync                   | The gunicorn class to use                                                                                               |
+|                                | WORKERS                       | 1                      | Number of gunicorn workers                                                                                              |
+|                                | THREADS                       | 1                      | Number of gunicorn threads                                                                                              |
+|                                | PRELOAD                       | False                  | If gunicorn should preload the code                                                                                     |
+|                                | LOG_LEVEL                     | error                  | The log level for gunicorn                                                                                              |
+|                                | TIMEOUT                       | 600                    | The timeout for gunicorn, if your terraform run takes longer you will need to increase it                               |
 
 
 The easiest way to change a default value is to pass the envvar key\value to the docker container with the `-e` cli arg but if you want you can also create a configuration file with the settings you wish (in whatever of the standard format you desire) & place it in the /www/config folder inside the container.
@@ -117,6 +117,41 @@ Terraformize supports 3 authentication methods:
     * Also returns a JSON body of {"healthy": true}
     * Never needs auth
     * Useful to monitoring the health of Terraformize service
+
+# RabbitMQ queue
+
+if you prefer using RabbitMQ instead of the API then you'll need to configure the `rabbit_url_connection_string` (examples can be seen at https://pika.readthedocs.io/en/stable/examples/using_urlparameters.html#using-urlparameters), Terrafromize will then use 2 Queues on rabbit (defined at the `rabbit_read_queue` & `rabbit_reply_queue` params), you don't have to create the queues manually, if need be they will be created.
+
+Now all you need to do in order to have a terraform run is to publish a message to the `rabbit_read_queue` with the following format:
+
+```json
+{
+  "module_folder": "module_folder_name",
+  "workspace": "workspace_name",
+  "uuid": "unique_uuid_you_created_to_identify_the_request",
+  "run_type": "apply/destroy/plan",
+  "run_variables": {
+    "var_to_pass_to_terraform_key": "var_to_pass_to_terraform_value",
+    "another_var_to_pass_to_terraform_key": "another_var_to_pass_to_terraform_value"
+  }
+  
+}
+```
+
+Terraformize will then run terraform for you and will return the result of the terraform run to the `rabbit_reply_queue` queue in the following format:
+
+```json
+{
+  "uuid": "unique_uuid_you_created_to_identify_the_request",
+  "init_stdout": "...", 
+  "init_stderr": "...", 
+  "stderr": "...", 
+  "stdout": "...", 
+  "exit_code": "0"
+}
+```
+
+It's up to you to ensure the `uuid` you pass is indeed unique.
 
 # Example
 

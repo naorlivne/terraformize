@@ -1,4 +1,6 @@
 import pika
+import os
+import sys
 
 
 class RabbitWorker:
@@ -34,16 +36,26 @@ class RabbitWorker:
             :param properties: the queue properties, taken internally from pika
             :param body: the json body in string form of the message read from the the queue
         """
-        # TODO actual code here that reads the 'body' of the message and runs the proper terraformize command then
-        #  publishes the run result to the reply_queue
-        ch.basic_ack(delivery_tag=method.delivery_tag)
+        try:
+            # TODO actual code here that reads the 'body' of the message and runs the proper terraformize command then
+            #  publishes the run result to the reply_queue
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+        except Exception as e:
+            print("RabbitMQ read from queue related issues - dropping container")
+            print(e, file=sys.stderr)
+            os._exit(2)
 
     def read_from_queue(self):
         """
-        Will read a message from a queue
+        Will start consuming messages from a queue
         """
-        self.consume_channel.basic_qos(prefetch_count=1)
-        self.consume_channel.basic_consume(queue=self.read_queue, on_message_callback=self.callback)
+        try:
+            self.consume_channel.basic_qos(prefetch_count=1)
+            self.consume_channel.basic_consume(queue=self.read_queue, on_message_callback=self.callback)
+        except Exception as e:
+            print("RabbitMQ read from queue related issues - dropping container")
+            print(e, file=sys.stderr)
+            os._exit(2)
 
     def respond_to_queue(self, message: bytes):
         """
