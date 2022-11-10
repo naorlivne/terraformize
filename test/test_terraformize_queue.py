@@ -1,8 +1,6 @@
 from unittest import TestCase
 from terraformize.terraformize_queue import *
 import os
-from flask import request
-import httpretty
 
 
 # this will run all tests in relation to the location of this file so that the test_terraform folder will catch
