@@ -134,7 +134,6 @@ Now all you need to do in order to have a terraform run is to publish a message 
     "var_to_pass_to_terraform_key": "var_to_pass_to_terraform_value",
     "another_var_to_pass_to_terraform_key": "another_var_to_pass_to_terraform_value"
   }
-  
 }
 ```
 

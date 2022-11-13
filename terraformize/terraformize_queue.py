@@ -40,9 +40,9 @@ class RabbitWorker:
         self.consume_connection = pika.BlockingConnection(pika.connection.URLParameters(rabbit_url_connection_string))
         self.publish_connection = pika.BlockingConnection(pika.connection.URLParameters(rabbit_url_connection_string))
         self.consume_channel = self.consume_connection.channel()
-        self.consume_channel.queue_declare(queue=read_queue, durable=True)
+        self.declared_read_queue = self.consume_channel.queue_declare(queue=read_queue, durable=True)
         self.publish_channel = self.publish_connection.channel()
-        self.publish_channel.queue_declare(queue=reply_queue, durable=True)
+        self.declared_reply_queue = self.publish_channel.queue_declare(queue=reply_queue, durable=True)
 
     def callback(self, ch, method, properties, body: bytes):
         """
@@ -111,7 +111,7 @@ class RabbitWorker:
             self.respond_to_queue(return_body)
             ch.basic_ack(delivery_tag=method.delivery_tag)
         except Exception as e:
-            print("RabbitMQ read from queue related issues - dropping container")
+            print("RabbitMQ read from queue and/or message related issues - dropping container")
             print(e, file=sys.stderr)
             os._exit(2)
 
