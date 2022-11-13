@@ -11,6 +11,9 @@ class BaseTests(TestCase):
             'basic_auth_user': None,
             'basic_auth_password': None,
             'parallelism': 10,
+            'rabbit_read_queue': 'terraformize_read_queue',
+            'rabbit_reply_queue': 'terraformize_reply_queue',
+            'rabbit_url_connection_string': None,
             'auth_token': None,
             'terraform_binary_path': None,
             'terraform_modules_path': '/www/terraform_modules'
@@ -25,6 +28,9 @@ class BaseTests(TestCase):
                 'basic_auth_user': None,
                 'basic_auth_password': None,
                 'parallelism': 10,
+                'rabbit_read_queue': 'terraformize_read_queue',
+                'rabbit_reply_queue': 'terraformize_reply_queue',
+                'rabbit_url_connection_string': None,
                 'auth_token': "my_super_secret_token123",
                 'terraform_binary_path': None,
                 'terraform_modules_path': '/www/terraform_modules'
@@ -38,6 +44,9 @@ class BaseTests(TestCase):
             'basic_auth_user': None,
             'basic_auth_password': None,
             'parallelism': 10,
+            'rabbit_read_queue': 'terraformize_read_queue',
+            'rabbit_reply_queue': 'terraformize_reply_queue',
+            'rabbit_url_connection_string': None,
             'auth_token': "my_super_secret_token",
             'terraform_binary_path': None,
             'terraform_modules_path': '/www/terraform_modules123'

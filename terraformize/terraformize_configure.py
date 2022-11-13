@@ -33,7 +33,7 @@ def read_configurations(config_folder: str = "config") -> dict:
     config["rabbit_read_queue"] = parser.read_configuration_variable("rabbit_read_queue",
                                                                      default_value="terraformize_read_queue")
     config["rabbit_reply_queue"] = parser.read_configuration_variable("rabbit_reply_queue",
-                                                                      default_value="rabbit_reply_queue")
+                                                                      default_value="terraformize_reply_queue")
     return config
 
 
