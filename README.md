@@ -54,26 +54,26 @@ Feel free to skip to the end of the document for a working example that will exp
 
 Terraformize uses sane defaults but they can all be easily changed:
 
-| value                          | envvar                        | default value          | notes                                                                                                                   |
-|--------------------------------|-------------------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| basic_auth_user                | BASIC_AUTH_USER               | None                   | Basic auth username to use                                                                                              |
-| basic_auth_password            | BASIC_AUTH_PASSWORD           | None                   | Basic auth password to use                                                                                              |
-| auth_token                     | AUTH_TOKEN                    | None                   | bearer token to use                                                                                                     |
-| terraform_binary_path          | TERRAFORM_BINARY_PATH         | None                   | The path to the terraform binary, if None will use the default OS PATH to find it                                       |
-| terraform_modules_path         | TERRAFORM_MODULES_PATH        | /www/terraform_modules | The path to the parent directory where all terraform module directories will be stored at as subdirs                    |
-| parallelism                    | PARALLELISM                   | 10                     | The number of parallel resource operations                                                                              |
-| rabbit_url_connection_string   | RABBIT_URL_CONNECTION_STRING  | None                   | The URL paramters string to connect to RabbitMQ with, if unset RabbitMQ will not be used and only API will be possible  |
-| rabbit_read_queue              | RABBIT_READ_QUEUE             | None                   | Name of the queue to read messages from                                                                                 |
-| rabbit_reply_queue             | RABBIT_REPLY_QUEUE            | None                   | Name of the queue to respond with the run result to                                                                     |
-|                                | CONFIG_DIR                    | /www/config            | The path to the directory where configuration files are stored at                                                       |
-|                                | HOST                          | 0.0.0.0                | The IP for gunicorn to bind to                                                                                          |
-|                                | PORT                          | 80                     | The port for gunicorn to bind to                                                                                        |
-|                                | WORKER_CLASS                  | sync                   | The gunicorn class to use                                                                                               |
-|                                | WORKERS                       | 1                      | Number of gunicorn workers                                                                                              |
-|                                | THREADS                       | 1                      | Number of gunicorn threads                                                                                              |
-|                                | PRELOAD                       | False                  | If gunicorn should preload the code                                                                                     |
-|                                | LOG_LEVEL                     | error                  | The log level for gunicorn                                                                                              |
-|                                | TIMEOUT                       | 600                    | The timeout for gunicorn, if your terraform run takes longer you will need to increase it                               |
+| value                          | envvar                        | default value            | notes                                                                                                                   |
+|--------------------------------|-------------------------------|--------------------------|-------------------------------------------------------------------------------------------------------------------------|
+| basic_auth_user                | BASIC_AUTH_USER               | None                     | Basic auth username to use                                                                                              |
+| basic_auth_password            | BASIC_AUTH_PASSWORD           | None                     | Basic auth password to use                                                                                              |
+| auth_token                     | AUTH_TOKEN                    | None                     | bearer token to use                                                                                                     |
+| terraform_binary_path          | TERRAFORM_BINARY_PATH         | None                     | The path to the terraform binary, if None will use the default OS PATH to find it                                       |
+| terraform_modules_path         | TERRAFORM_MODULES_PATH        | /www/terraform_modules   | The path to the parent directory where all terraform module directories will be stored at as subdirs                    |
+| parallelism                    | PARALLELISM                   | 10                       | The number of parallel resource operations                                                                              |
+| rabbit_url_connection_string   | RABBIT_URL_CONNECTION_STRING  | None                     | The URL paramters string to connect to RabbitMQ with, if unset RabbitMQ will not be used and only API will be possible  |
+| rabbit_read_queue              | RABBIT_READ_QUEUE             | terraformize_read_queue  | Name of the queue to read messages from                                                                                 |
+| rabbit_reply_queue             | RABBIT_REPLY_QUEUE            | terraformize_reply_queue | Name of the queue to respond with the run result to                                                                     |
+|                                | CONFIG_DIR                    | /www/config              | The path to the directory where configuration files are stored at                                                       |
+|                                | HOST                          | 0.0.0.0                  | The IP for gunicorn to bind to                                                                                          |
+|                                | PORT                          | 80                       | The port for gunicorn to bind to                                                                                        |
+|                                | WORKER_CLASS                  | sync                     | The gunicorn class to use                                                                                               |
+|                                | WORKERS                       | 1                        | Number of gunicorn workers                                                                                              |
+|                                | THREADS                       | 1                        | Number of gunicorn threads                                                                                              |
+|                                | PRELOAD                       | False                    | If gunicorn should preload the code                                                                                     |
+|                                | LOG_LEVEL                     | error                    | The log level for gunicorn                                                                                              |
+|                                | TIMEOUT                       | 600                      | The timeout for gunicorn, if your terraform run takes longer you will need to increase it                               |
 
 
 The easiest way to change a default value is to pass the envvar key\value to the docker container with the `-e` cli arg but if you want you can also create a configuration file with the settings you wish (in whatever of the standard format you desire) & place it in the /www/config folder inside the container.
