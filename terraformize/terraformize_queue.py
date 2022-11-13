@@ -140,7 +140,7 @@ class RabbitWorker:
         self.publish_channel.basic_publish(
             exchange='',
             routing_key=self.reply_queue,
-            body=bytes(json.dumps(message)),
+            body=json.dumps(message).encode(),
             properties=pika.BasicProperties(
                 delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
             )

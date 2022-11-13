@@ -11,7 +11,14 @@ test_bin_location = os.getenv("TEST_BIN_LOCATION", "/usr/bin/terraform")
 
 class BaseTests(TestCase):
     def test_extract_params_from_queue_json(self):
-        pass
+        test_message = """
+        {
+        "test_key": "test_value"
+        }
+        """
+        test_message = test_message.encode()
+        extracted_message = extract_params_from_queue_json(test_message)
+        self.assertEqual(extracted_message, {"test_key": "test_value"})
 
     def test_rabbit_worker_init(self):
         pass
