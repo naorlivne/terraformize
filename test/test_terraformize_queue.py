@@ -7,7 +7,7 @@ import os
 # the correct path
 test_files_location = os.getenv("TEST_FILES_LOCATION", os.path.realpath(__file__).rsplit("/", 1)[0]) + "/test_terraform"
 test_bin_location = os.getenv("TEST_BIN_LOCATION", "/usr/bin/terraform")
-rabbit_url_connection_string = os.getenv("TEST_RABBIT_URL_CONNECTION_STRING", None)
+rabbit_url_connection_string = os.getenv("TEST_RABBIT_URL_CONNECTION_STRING", "amqp://rabbit")
 
 
 class BaseTests(TestCase):

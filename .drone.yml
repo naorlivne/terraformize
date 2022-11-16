@@ -9,6 +9,8 @@ platform:
 services:
 - name: consul
   image: consul
+- name: rabbit
+  image: rabbitmq
 
 steps:
 - name: install_terraform
