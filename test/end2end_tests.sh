@@ -81,3 +81,9 @@ curl --fail-with-body -X POST \
   -d '{
     "test": "hello-world"
 }'
+
+# checking with rabbitmq
+wget https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/v3.11.4/deps/rabbitmq_management/bin/rabbitmqadmin
+chmod +x rabbitmqadmin
+./rabbitmqadmin -H rabbit -u guest -p guest publish exchange=amq.default routing_key=e2e_test_queue payload="{\"module_folder\": \"working_test_remote_backend\",\"workspace\": \"my_rabbitmq_e2e_workspace\",\"uuid\": \"1234567890\",\"run_type\": \"plan\",\"run_variables\": {\"test\": \"hello-world\"}}"
+./rabbitmqadmin  -H rabbit -u guest -p guest  get queue=terraformize_reply_queue ackmode=ack_requeue_false
