@@ -93,10 +93,11 @@ http://rabbit:15672/api/exchanges/%2F/amq.default/publish \
   "payload_encoding":"string"
 }'
 
-curl --fail-with-body -u guest:guest -H "content-type:application/json" -X POST \
+# if only one UUID that is the same as the one above is returned that means the massage returned ok, otherwise this will exit with a non 0 exit code and will fail the e2e test
+exit $(expr $(curl --fail-with-body -u guest:guest -H "content-type:application/json" -X POST \
 http://rabbit:15672/api/queues/%2F/terraformize_reply_queue/get \
 -d '{
-  "count":1,"requeue":false,
+  "count":10,"requeue":false,
   "encoding":"auto",
   "ackmode": "ack_requeue_false"
-}'
+}' | grep -c 1234567890) - 1)
