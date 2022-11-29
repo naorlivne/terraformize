@@ -96,6 +96,7 @@ http://rabbit:15672/api/exchanges/%2F/amq.default/publish \
 curl --fail-with-body -u guest:guest -H "content-type:application/json" -X POST \
 http://rabbit:15672/api/queues/%2F/terraformize_reply_queue/get \
 -d '{
-  "count":1,"requeue":true,
-  "encoding":"auto"
+  "count":1,"requeue":false,
+  "encoding":"auto",
+  "ackmode": "ack_requeue_false"
 }'
