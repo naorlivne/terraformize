@@ -83,7 +83,7 @@ curl --fail-with-body -X POST \
 }'
 
 # checking with rabbitmq
-wget https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/v3.11.4/deps/rabbitmq_management/bin/rabbitmqadmin
-chmod +x rabbitmqadmin
-./rabbitmqadmin -H rabbit -u guest -p guest publish exchange=amq.default routing_key=e2e_test_queue payload="{\"module_folder\": \"working_test_remote_backend\",\"workspace\": \"my_rabbitmq_e2e_workspace\",\"uuid\": \"1234567890\",\"run_type\": \"plan\",\"run_variables\": {\"test\": \"hello-world\"}}"
-./rabbitmqadmin  -H rabbit -u guest -p guest  get queue=terraformize_reply_queue ackmode=ack_requeue_false
+# TODO - need to change to work with curl rather then rabbitmqadmin due to python3 requirement which I don't want installed in the e2e bash containe
+#chmod +x rabbitmqadmin
+#./rabbitmqadmin -H rabbit -u guest -p guest publish exchange=amq.default routing_key=e2e_test_queue payload="{\"module_folder\": \"working_test_remote_backend\",\"workspace\": \"my_rabbitmq_e2e_workspace\",\"uuid\": \"1234567890\",\"run_type\": \"plan\",\"run_variables\": {\"test\": \"hello-world\"}}"
+#./rabbitmqadmin  -H rabbit -u guest -p guest  get queue=terraformize_reply_queue ackmode=ack_requeue_false
