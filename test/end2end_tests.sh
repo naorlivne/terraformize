@@ -14,7 +14,7 @@ set -x
 # wait until the endpoint becomes active
 until $(curl --output /dev/null --silent --head --fail-with-body -H 'cache-control: no-cache' http://run_end2end_tests_terraformize_service/v1/health); do
     echo "Waiting on Terraformize API to become available..."
-    sleep 1
+    sleep 5
 done
 
 # checking health endpoint
