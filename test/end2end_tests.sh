@@ -84,6 +84,6 @@ curl --fail-with-body -X POST \
 
 # checking with rabbitmq
 curl --fail-with-body -u guest:guest -H "content-type:application/json" -X POST \
-http://rabbit:15672/api/exchanges/%2Fvhost/exchange/publish -d'{"properties":{},"routing_key":"e2e_test_queue","payload": "{\"module_folder\": \"working_test_remote_backend\",\"workspace\": \"my_rabbitmq_e2e_workspace\",\"uuid\": \"1234567890\",\"run_type\": \"plan\",\"run_variables\": {\"test\": \"hello-world\"}}","payload_encoding":"string"}'
+http://rabbit:15672/api/exchanges/%2F/exchange/publish -d'{"properties":{},"routing_key":"e2e_test_queue","payload": "{\"module_folder\": \"working_test_remote_backend\",\"workspace\": \"my_rabbitmq_e2e_workspace\",\"uuid\": \"1234567890\",\"run_type\": \"plan\",\"run_variables\": {\"test\": \"hello-world\"}}","payload_encoding":"string"}'
 curl --fail-with-body -u guest:guest -H "content-type:application/json" -X POST \
-http://rabbit:15672/api/queues/%2Fvhost/terraformize_reply_queue/get -d'{"count":1,"requeue":true,"encoding":"auto","truncate":50000}'
+http://rabbit:15672/api/queues/%2F/terraformize_reply_queue/get -d'{"count":1,"requeue":true,"encoding":"auto","truncate":50000}'
