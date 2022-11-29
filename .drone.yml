@@ -10,7 +10,7 @@ services:
 - name: consul
   image: consul
 - name: rabbit
-  image: rabbitmq
+  image: rabbitmq:3.11.4-management-alpine
 
 steps:
 - name: install_terraform
@@ -84,7 +84,7 @@ services:
 - name: consul
   image: consul
 - name: rabbit
-  image: rabbitmq
+  image: rabbitmq:3.11.4-management-alpine
 
 steps:
 - name: install_terraform
