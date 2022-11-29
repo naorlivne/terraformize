@@ -9,6 +9,7 @@
 
 # exit on any failure with a non zero exit code of the line below in order to fail the e2e test
 set -e
+set -x
 
 # wait until the endpoint becomes active
 until $(curl --output /dev/null --silent --head --fail-with-body -H 'cache-control: no-cache' http://run_end2end_tests_terraformize_service/v1/health); do
