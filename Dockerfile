@@ -1,5 +1,5 @@
 # pull upstream terraform image
-FROM hashicorp/terraform:1.3.5 AS terraform
+FROM hashicorp/terraform:1.3.6 AS terraform
 
 # it's offical so i'm using it + alpine so damn small
 FROM python:3.9.5-alpine3.12
