@@ -23,7 +23,7 @@ COPY --from=terraform /bin/terraform /usr/local/bin/terraform
 COPY config/config.py /etc/gunicorn/config.py
 
 COPY requirements.txt /www/requirements.txt
-RUN pip install -r /www/requirements.txt
+RUN pip install --no-cache-dir -r /www/requirements.txt
 
 # copy the codebase
 COPY . /www
