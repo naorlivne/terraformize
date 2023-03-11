@@ -2,7 +2,7 @@
 
 Apply\Destory Terraform modules via a simple REST API endpoint.
 
-Drone.io CI/CD unit tests & auto push status: [![Build Status](https://cloud.drone.io/api/badges/naorlivne/terraformize/status.svg)](https://cloud.drone.io/naorlivne/terraformize)
+Github actions CI unit tests & auto dockerhub push status: [![CI/CD](https://github.com/naorlivne/terraformize/actions/workflows/full_ci_cd_workflow.yml/badge.svg)](https://github.com/naorlivne/terraformize/actions/workflows/full_ci_cd_workflow.yml)
 
 Code coverage: [![codecov](https://codecov.io/gh/naorlivne/terraformize/branch/master/graph/badge.svg)](https://codecov.io/gh/naorlivne/terraformize)
 

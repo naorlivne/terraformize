@@ -1,0 +1,39 @@
+name: PR CI
+
+on:
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  testing_job:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.9", "3.10", "3.11" ]
+    services:
+      consul:
+        image: consul
+      rabbit:
+        image: rabbitmq:3.11.4-management-alpine
+    container: python:${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          wget https://releases.hashicorp.com/terraform/1.2.5/terraform_1.2.5_linux_amd64.zip -O /tmp/terraform_1.2.5_linux_amd64.zip
+          unzip /tmp/terraform_*.zip
+          cp terraform /usr/bin/terraform
+          python -m pip install --upgrade pip
+          pip install flake8
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test
+        run: |
+          coverage run -m unittest
