@@ -6,7 +6,7 @@ codecov==2.1.12
 configobj==5.0.8
 coverage==7.2.1
 dpath==2.1.4
-Flask==2.2.2
+Flask==2.2.3
 Flask-HTTPAuth==4.7.0
 gunicorn==20.1.0
 httpretty==1.1.4
