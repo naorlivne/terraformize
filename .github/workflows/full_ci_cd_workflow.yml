@@ -37,7 +37,11 @@ jobs:
       - name: Test
         run: |
           coverage run -m unittest
-          codecov  -t  ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   build_and_publish_job:
 
