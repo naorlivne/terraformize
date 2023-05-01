@@ -6,7 +6,7 @@ configobj==5.0.8
 coverage==7.2.4
 dpath==2.1.5
 Flask==2.2.3
-Flask-HTTPAuth==4.7.0
+Flask-HTTPAuth==4.8.0
 gunicorn==20.1.0
 httpretty==1.1.4
 idna==3.4
