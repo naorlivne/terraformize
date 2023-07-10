@@ -1,6 +1,6 @@
 certifi==2023.5.7
 chardet==5.1.0
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
 click==8.1.4
 configobj==5.0.8
 coverage==7.2.7
