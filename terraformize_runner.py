@@ -1,3 +1,5 @@
+# Python script that sets up an API endpoint using Flask and incorporates some additional functionality related to RabbitMQ (a message queue system) for handling asynchronous tasks
+
 from terraformize.terraformize_endpoint import *
 from threading import Thread
 from terraformize.terraformize_queue import *
