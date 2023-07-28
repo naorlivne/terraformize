@@ -3,6 +3,11 @@ from threading import Thread
 from terraformize.terraformize_queue import *
 from terraformize.terraformize_configure import *
 
+the code sets up a Flask API endpoint that can receive requests and respond to them. 
+#If RabbitMQ is configured, it also opens a separate thread to process asynchronous tasks using RabbitMQ. 
+#The use of multi-threading in Flask ensures that the API endpoint remains 
+# responsive even during the processing of long-running tasks in the background.
+
 # if RabbitMQ is configured opens a new thread to read from queue too, reason for new thread is not to block the API
 # endpoint so to allow the health checks to carry on working
 if configuration["rabbit_url_connection_string"] is not None:
