@@ -1,3 +1,5 @@
+# **IMPORTANT - Due to Hashicorp licensing change Terraformize will no longer be able to update to new Terraform versions, as a result I'm pausing all work on Terraformize, this is done in part due to legal concerns as it's unclear if an Open source project would be considered a "competitive offer" and in part due to me not wishing to donate my time to HCP ecosystem now that they stopped giving back to the FOSS community**
+
 # Terraformize
 
 Apply\Destory Terraform modules via a simple REST API endpoint.
