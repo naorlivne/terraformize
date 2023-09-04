@@ -3,7 +3,7 @@ chardet==5.1.0
 charset-normalizer==3.2.0
 click==8.1.6
 configobj==5.0.8
-coverage==7.2.7
+coverage==7.3.0
 dpath==2.1.6
 Flask==2.2.5
 Flask-HTTPAuth==4.8.0
